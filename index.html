@@ -1046,8 +1046,12 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 sm:p-6">
                 <!-- Preview -->
-                <div class="bg-brand-50 rounded-2xl border border-brand-200 p-3 flex items-center justify-center relative min-h-[320px]">
-                    <canvas id="igFlyerCanvas" class="max-w-full max-h-[62vh] w-auto h-auto rounded-xl shadow-card bg-white"></canvas>
+                <div class="bg-brand-50 rounded-2xl border border-brand-200 p-3 flex flex-col items-center justify-center gap-2.5 relative min-h-[320px]">
+                    <canvas id="igFlyerCanvas" class="max-w-full max-h-[58vh] w-auto h-auto rounded-xl shadow-card bg-white touch-none select-none"></canvas>
+                    <div class="flex items-center justify-center gap-3 text-[11px] text-brand-600 text-center leading-snug">
+                        <span><i class="ph-bold ph-hand-grabbing"></i> Arrastrá cada foto para acomodarla · pellizcá o usá la ruedita para el zoom</span>
+                        <button onclick="resetIgCrops()" class="font-bold text-brand-700 hover:text-brand-900 underline underline-offset-2 flex-shrink-0">Centrar fotos</button>
+                    </div>
                     <div id="igFlyerLoading" class="hidden absolute inset-0 bg-brand-50/80 rounded-2xl flex items-center justify-center text-xs font-bold text-brand-700 gap-2">
                         <i class="ph-bold ph-spinner animate-spin text-lg"></i> Armando el flyer...
                     </div>
@@ -1870,7 +1874,10 @@
             check: 'M5 12.5 L10 17.5 L19 7'
         };
 
-        let igFlyerState = { propId: null, format: 'story', renderToken: 0, renderPromise: null, blob: null, warnedPhoto: false };
+        const IG_MAX_ZOOM = 4;
+
+        // lastDraw/frames: lo último dibujado y dónde quedó cada foto, para poder reencuadrar sin recargar todo
+        let igFlyerState = { propId: null, format: 'story', renderToken: 0, renderPromise: null, blob: null, warnedPhoto: false, lastDraw: null, frames: [] };
         const igExtrasByProp = {}; // Fotos extra por propiedad (solo durante la sesión)
         const igImageCache = new Map();
         let igRenderTimer = null;
@@ -1880,7 +1887,10 @@
             if (!prop) return;
             igFlyerState.propId = propId;
             igFlyerState.warnedPhoto = false;
-            if (!igExtrasByProp[propId]) igExtrasByProp[propId] = { photos: [null, null], captions: ['', ''] };
+            // crops: encuadre de cada foto (posición y zoom), separado por formato porque cambia la forma del recuadro
+            if (!igExtrasByProp[propId]) igExtrasByProp[propId] = { photos: [null, null], captions: ['', ''], crops: { story: {}, feed: {} } };
+            igFlyerState.lastDraw = null;
+            igFlyerState.frames = [];
             const extras = igExtrasByProp[propId];
             [0, 1].forEach(i => {
                 document.getElementById(`igExtraCaption${i}`).value = extras.captions[i];
@@ -1939,22 +1949,23 @@
             document.getElementById(`igExtraIcon${index}`).classList.toggle('hidden', !!src);
         }
 
-        function scheduleIgFlyerRender() {
+        function scheduleIgFlyerRender(quiet) {
             clearTimeout(igRenderTimer);
             igRenderTimer = setTimeout(() => {
                 igRenderTimer = null;
-                renderIgFlyer();
+                renderIgFlyer(quiet);
             }, 300);
         }
 
-        function renderIgFlyer() {
+        // quiet: sin el cartel de "Armando el flyer..." (se usa al terminar de reencuadrar una foto)
+        function renderIgFlyer(quiet) {
             clearTimeout(igRenderTimer);
             igRenderTimer = null;
-            igFlyerState.renderPromise = renderIgFlyerAsync();
+            igFlyerState.renderPromise = renderIgFlyerAsync(quiet === true);
             return igFlyerState.renderPromise;
         }
 
-        async function renderIgFlyerAsync() {
+        async function renderIgFlyerAsync(quiet) {
             const prop = properties.find(p => p.id === igFlyerState.propId);
             if (!prop) return;
             const token = ++igFlyerState.renderToken;
@@ -1964,22 +1975,24 @@
             extras.captions = [0, 1].map(i => document.getElementById(`igExtraCaption${i}`).value.trim());
 
             const loading = document.getElementById('igFlyerLoading');
-            loading.classList.remove('hidden');
+            if (!quiet) loading.classList.remove('hidden');
             try {
                 await loadIgFonts();
                 const mainImg = await loadIgImage(getIgHighResUrl(prop.image));
                 const extraImgs = [];
                 for (let i = 0; i < 2; i++) {
                     const img = await loadIgImage(extras.photos[i]);
-                    if (img) extraImgs.push({ img, caption: extras.captions[i] });
+                    if (img) extraImgs.push({ img, caption: extras.captions[i], slot: i });
                 }
                 if (token !== igFlyerState.renderToken) return;
 
-                const fmt = IG_FORMATS[igFlyerState.format];
+                const format = igFlyerState.format;
+                const fmt = IG_FORMATS[format];
                 const canvas = document.getElementById('igFlyerCanvas');
-                canvas.width = fmt.w;
-                canvas.height = fmt.h;
-                drawIgFlyer(canvas.getContext('2d'), igFlyerState.format, prop, mainImg, extraImgs);
+                if (canvas.width !== fmt.w) canvas.width = fmt.w;
+                if (canvas.height !== fmt.h) canvas.height = fmt.h;
+                igFlyerState.lastDraw = { propId: prop.id, format, prop, mainImg, extraImgs };
+                igFlyerState.frames = drawIgFlyer(canvas.getContext('2d'), format, prop, mainImg, extraImgs, extras.crops[format]);
 
                 if (!mainImg && !igFlyerState.warnedPhoto) {
                     igFlyerState.warnedPhoto = true;
@@ -2177,16 +2190,36 @@
             ctx.closePath();
         }
 
-        function igDrawCover(ctx, img, x, y, w, h) {
+        function igClamp(v, min, max) {
+            return Math.min(max, Math.max(min, v));
+        }
+
+        // El encuadre guardado vale solo para la misma foto (si se cambia la foto, vuelve a quedar centrada)
+        function igCropFor(crops, slot, img) {
+            const crop = crops && crops[slot];
+            return crop && crop.img === img ? crop : null;
+        }
+
+        // Dónde se dibuja la foto para cubrir el recuadro: zoom 1 = justo lo cubre; fx/fy = punto de la foto
+        // (0 a 1) que queda en el centro del recuadro. Nunca deja bordes vacíos.
+        function igCoverGeometry(img, frame, crop) {
+            const base = Math.max(frame.w / img.naturalWidth, frame.h / img.naturalHeight);
+            const zoom = crop ? crop.zoom : 1;
+            const dw = img.naturalWidth * base * zoom;
+            const dh = img.naturalHeight * base * zoom;
+            const dx = igClamp(frame.x + frame.w / 2 - (crop ? crop.fx : 0.5) * dw, frame.x + frame.w - dw, frame.x);
+            const dy = igClamp(frame.y + frame.h / 2 - (crop ? crop.fy : 0.5) * dh, frame.y + frame.h - dh, frame.y);
+            return { dx, dy, dw, dh, zoom };
+        }
+
+        function igDrawCover(ctx, img, x, y, w, h, crop) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(x, y, w, h);
             ctx.clip();
             if (img) {
-                const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
-                const dw = img.naturalWidth * scale;
-                const dh = img.naturalHeight * scale;
-                ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+                const g = igCoverGeometry(img, { x, y, w, h }, crop);
+                ctx.drawImage(img, g.dx, g.dy, g.dw, g.dh);
             } else {
                 const g = ctx.createLinearGradient(x, y, x + w, y + h);
                 g.addColorStop(0, IG_COLORS.plum);
@@ -2322,11 +2355,13 @@
             ctx.restore();
         }
 
-        function drawIgFlyer(ctx, format, prop, mainImg, extraImgs) {
+        // Devuelve los recuadros de las fotos (para saber cuál se toca al reencuadrar)
+        function drawIgFlyer(ctx, format, prop, mainImg, extraImgs, crops) {
             const { w: W, h: H } = IG_FORMATS[format];
             const isStory = format === 'story';
             const isVenta = prop.operation === 'Venta';
             const gap = 14;
+            const frames = [];
 
             ctx.clearRect(0, 0, W, H);
             ctx.fillStyle = '#FFFFFF';
@@ -2345,7 +2380,8 @@
             const heroH = H - footerH - featuresH - (rowH ? rowH + gap : 0);
 
             // --- Foto principal ---
-            igDrawCover(ctx, mainImg, 0, 0, W, heroH);
+            igDrawCover(ctx, mainImg, 0, 0, W, heroH, igCropFor(crops, 'main', mainImg));
+            if (mainImg) frames.push({ slot: 'main', img: mainImg, x: 0, y: 0, w: W, h: heroH });
             const shade = ctx.createLinearGradient(0, heroH * 0.45, 0, heroH);
             shade.addColorStop(0, 'rgba(61, 20, 48, 0)');
             shade.addColorStop(1, 'rgba(61, 20, 48, 0.45)');
@@ -2434,7 +2470,9 @@
                 const cellW = (W - gap * (extraImgs.length - 1)) / extraImgs.length;
                 extraImgs.forEach((extra, i) => {
                     const x = i * (cellW + gap);
-                    igDrawCover(ctx, extra.img, x, y, cellW, rowH);
+                    const slot = `extra${extra.slot}`;
+                    igDrawCover(ctx, extra.img, x, y, cellW, rowH, igCropFor(crops, slot, extra.img));
+                    frames.push({ slot, img: extra.img, x, y, w: cellW, h: rowH });
                     if (extra.caption) igDrawCaption(ctx, extra.caption, x, y, cellW, rowH, isStory);
                 });
                 y += rowH;
@@ -2537,7 +2575,137 @@
             ctx.fillStyle = IG_COLORS.line;
             ctx.fillText(`GINA PEPA INMOBILIARIA · ${prop.code}`, rightX, top + 142 * k);
             ctx.restore();
+            return frames;
         }
+
+        // ---------- Reencuadre de fotos (arrastrar + pellizcar / ruedita) ----------
+        const igGesture = { pointers: new Map(), frame: null, last: null, drawRequest: 0 };
+
+        function igCurrentCrops() {
+            const extras = igExtrasByProp[igFlyerState.propId];
+            return extras ? extras.crops[igFlyerState.format] : null;
+        }
+
+        // Redibuja al instante con las fotos ya cargadas (sin armar la imagen final, que es lo que tarda)
+        function igRequestQuickDraw() {
+            if (igGesture.drawRequest) return;
+            igGesture.drawRequest = requestAnimationFrame(() => {
+                igGesture.drawRequest = 0;
+                const d = igFlyerState.lastDraw;
+                if (!d || d.propId !== igFlyerState.propId || d.format !== igFlyerState.format) return;
+                const canvas = document.getElementById('igFlyerCanvas');
+                igFlyerState.frames = drawIgFlyer(canvas.getContext('2d'), d.format, d.prop, d.mainImg, d.extraImgs, igCurrentCrops());
+            });
+        }
+
+        // Pasa la posición del dedo/mouse en pantalla a píxeles del flyer (el canvas se ve achicado)
+        function igCanvasPoint(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - rect.left) * canvas.width / rect.width,
+                y: (e.clientY - rect.top) * canvas.height / rect.height
+            };
+        }
+
+        function igFrameAt(pt) {
+            return igFlyerState.frames.find(f => pt.x >= f.x && pt.x <= f.x + f.w && pt.y >= f.y && pt.y <= f.y + f.h) || null;
+        }
+
+        // Centro entre los dedos y distancia entre los dos primeros (para el pellizco)
+        function igGestureCenter() {
+            const pts = [...igGesture.pointers.values()];
+            const x = pts.reduce((s, p) => s + p.x, 0) / pts.length;
+            const y = pts.reduce((s, p) => s + p.y, 0) / pts.length;
+            const dist = pts.length > 1 ? Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y) : 0;
+            return { x, y, dist };
+        }
+
+        // Mueve la foto (panX/panY) y le aplica zoom (factor) alrededor del punto (px, py), sin dejar bordes vacíos
+        function igMoveCrop(frame, factor, px, py, panX, panY) {
+            const crops = igCurrentCrops();
+            if (!crops) return;
+            const g = igCoverGeometry(frame.img, frame, igCropFor(crops, frame.slot, frame.img));
+            const zoom = igClamp(g.zoom * factor, 1, IG_MAX_ZOOM);
+            const k = zoom / g.zoom;
+            const dw = g.dw * k;
+            const dh = g.dh * k;
+            const dx = px - (px - (g.dx + panX)) * k;
+            const dy = py - (py - (g.dy + panY)) * k;
+            const crop = { img: frame.img, zoom, fx: (frame.x + frame.w / 2 - dx) / dw, fy: (frame.y + frame.h / 2 - dy) / dh };
+            // Se guarda ya ajustado al borde, así al volver para atrás la foto responde enseguida
+            const fixed = igCoverGeometry(frame.img, frame, crop);
+            crop.fx = (frame.x + frame.w / 2 - fixed.dx) / fixed.dw;
+            crop.fy = (frame.y + frame.h / 2 - fixed.dy) / fixed.dh;
+            crops[frame.slot] = crop;
+            igFlyerState.blob = null;
+            igRequestQuickDraw();
+        }
+
+        function resetIgCrops() {
+            const extras = igExtrasByProp[igFlyerState.propId];
+            if (!extras) return;
+            extras.crops[igFlyerState.format] = {};
+            renderIgFlyer(true);
+        }
+
+        function setupIgCropGestures() {
+            const canvas = document.getElementById('igFlyerCanvas');
+
+            canvas.addEventListener('pointerdown', e => {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                const pt = igCanvasPoint(canvas, e);
+                if (!igGesture.pointers.size) {
+                    igGesture.frame = igFrameAt(pt);
+                    if (!igGesture.frame) return;
+                } else if (!igGesture.frame) {
+                    return;
+                }
+                e.preventDefault();
+                canvas.setPointerCapture(e.pointerId);
+                igGesture.pointers.set(e.pointerId, pt);
+                igGesture.last = igGestureCenter();
+                canvas.style.cursor = 'grabbing';
+            });
+
+            canvas.addEventListener('pointermove', e => {
+                const pt = igCanvasPoint(canvas, e);
+                if (!igGesture.pointers.has(e.pointerId)) {
+                    if (e.pointerType === 'mouse' && !igGesture.pointers.size) canvas.style.cursor = igFrameAt(pt) ? 'grab' : '';
+                    return;
+                }
+                igGesture.pointers.set(e.pointerId, pt);
+                const cur = igGestureCenter();
+                const last = igGesture.last;
+                const factor = cur.dist && last.dist ? cur.dist / last.dist : 1;
+                igMoveCrop(igGesture.frame, factor, cur.x, cur.y, cur.x - last.x, cur.y - last.y);
+                igGesture.last = cur;
+            });
+
+            const endPointer = e => {
+                if (!igGesture.pointers.delete(e.pointerId)) return;
+                if (igGesture.pointers.size) {
+                    // Al levantar un dedo del pellizco se sigue arrastrando con el otro sin saltos
+                    igGesture.last = igGestureCenter();
+                    return;
+                }
+                igGesture.frame = null;
+                canvas.style.cursor = e.pointerType === 'mouse' && igFrameAt(igCanvasPoint(canvas, e)) ? 'grab' : '';
+                renderIgFlyer(true);
+            };
+            canvas.addEventListener('pointerup', endPointer);
+            canvas.addEventListener('pointercancel', endPointer);
+
+            canvas.addEventListener('wheel', e => {
+                const pt = igCanvasPoint(canvas, e);
+                const frame = igFrameAt(pt);
+                if (!frame) return;
+                e.preventDefault();
+                const delta = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+                igMoveCrop(frame, Math.exp(-delta * 0.0015), pt.x, pt.y, 0, 0);
+                scheduleIgFlyerRender(true);
+            }, { passive: false });
+        }
+        setupIgCropGestures();
 
         // ============================================================================
         // CONFIGURACIÓN DE TELÉFONO Y UTILIDADES
