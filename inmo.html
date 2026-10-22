@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gina Pepa Inmobiliaria | Servicio Inmobiliario Personalizado</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts matching Gina Pepa's brand typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for clean architectural & real estate symbology -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#FCF8FA',
+                            100: '#F7EEF3',
+                            200: '#EDD9E5',
+                            300: '#DCB6CD',
+                            400: '#C388AC',
+                            500: '#9A4E7E',
+                            600: '#7C3262', /* Primary Plum from Flyers */
+                            700: '#64234E', /* Deep Burgundy from Flyers */
+                            800: '#511C3F',
+                            900: '#3D1430',
+                            accent: '#7B2CBF', /* Vivid Violet from Reels */
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(100, 35, 78, 0.12)',
+                        'card': '0 14px 30px -8px rgba(100, 35, 78, 0.10)',
+                        'glow': '0 8px 25px -4px rgba(124, 50, 98, 0.35)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FCF8FA;
+            color: #2D1926;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-brand {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Subtle botanical background watermark */
+        .bg-botanical {
+            background-image: radial-gradient(circle at 90% 10%, rgba(220, 182, 205, 0.25) 0%, transparent 45%),
+                              radial-gradient(circle at 10% 85%, rgba(154, 78, 126, 0.12) 0%, transparent 50%);
+        }
+
+        /* Active Navigation Window Tab Styling */
+        .window-tab-active {
+            background: linear-gradient(135deg, #7C3262 0%, #511C3F 100%);
+            color: #ffffff;
+            box-shadow: 0 6px 20px -3px rgba(100, 35, 78, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .window-tab-inactive {
+            background-color: rgba(247, 238, 243, 0.85);
+            color: #64234E;
+        }
+        .window-tab-inactive:hover {
+            background-color: #EDD9E5;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7EEF3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C388AC;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7C3262;
+        }
+
+        /* Smooth Window Transitions */
+        .window-section {
+            animation: fadeSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-botanical min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
+
+    <!-- TOP BAR FOR NEW CLIENTS & DIRECT PHONE -->
+    <div class="bg-brand-800 text-brand-100 text-xs sm:text-sm py-2 px-4 border-b border-brand-700">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-brand-500/40 text-white border border-brand-400/30">
+                    ✨ Atención Personalizada
+                </span>
+                <span class="hidden md:inline text-brand-200">Venta, Alquileres y Tasaciones con respaldo profesional</span>
+            </div>
+            <div class="flex items-center gap-4 ml-auto">
+                <button onclick="openPhoneConfigModal()" class="text-brand-200 hover:text-white underline decoration-dotted text-xs flex items-center gap-1" title="Configurar número de WhatsApp para la demo">
+                    <i class="ph ph-gear"></i> <span id="topBarPhoneDisplay">Tel. Nuevos Clientes: 2302 45-7818</span>
+                </button>
+                <a href="#contacto" onclick="switchWindow('contacto'); return false;" class="font-semibold text-white hover:text-brand-200 flex items-center gap-1">
+                    <i class="ph-fill ph-Suitcase"></i> ¿Querés vender o alquilar?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER & 3 WINDOW BUTTONS -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-brand-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                
+                <!-- BRAND LOGO (Custom SVG recreating Gina Pepa's exact house + botanical leaf logo) -->
+                <div class="flex items-center justify-between">
+                    <button onclick="switchWindow('inicio')" class="flex items-center gap-3.5 text-left group focus:outline-none">
+                        <div class="relative w-14 h-14 flex-shrink-0 flex items-center justify-center bg-brand-50 rounded-2xl border border-brand-200 shadow-sm group-hover:border-brand-500 transition-colors">
+                            <svg viewBox="0 0 100 100" class="w-12 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- House Outline -->
+                                <path d="M18 42 L50 15 L82 42 V85 H68" stroke="#64234E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M32 85 H18 V48" stroke="#64234E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <!-- Botanical Branch on Top-Left -->
+                                <path d="M14 55 C18 40, 28 26, 44 14" stroke="#7C3262" stroke-width="2.2" stroke-linecap="round"/>
+                                <path d="M18 46 C10 42, 10 34, 20 38 C16 42, 18 46, 18 46 Z" fill="#7C3262"/>
+                                <path d="M25 35 C17 30, 19 22, 28 27 C25 31, 25 35, 25 35 Z" fill="#7C3262"/>
+                                <path d="M34 25 C28 19, 31 12, 38 18 C35 21, 34 25, 34 25 Z" fill="#9A4E7E"/>
+                                <path d="M23 48 C30 47, 33 41, 25 41 C23 44, 23 48, 23 48 Z" fill="#9A4E7E"/>
+                                <path d="M31 37 C38 36, 41 30, 33 30 C31 33, 31 37, 31 37 Z" fill="#7C3262"/>
+                                <!-- GP Serif Monogram -->
+                                <text x="51" y="61" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-weight="700" font-size="34" fill="#2D1926">GP</text>
+                                <text x="50" y="76" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-weight="600" font-size="10.5" fill="#64234E" letter-spacing="0.5">Gina Pepa</text>
+                                <text x="50" y="86" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-weight="600" font-size="5.5" fill="#7C3262" letter-spacing="1.6">INMOBILIARIA</text>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="block font-brand text-2xl sm:text-3xl font-bold tracking-tight text-brand-800 leading-none">
+                                GINA PEPA
+                            </span>
+                            <span class="block text-[11px] font-semibold tracking-[0.26em] text-brand-600 uppercase mt-1">
+                                Inmobiliaria
+                            </span>
+                        </div>
+                    </button>
+
+                    <!-- Quick WhatsApp Button on Mobile Header -->
+                    <a id="headerMobileWaBtn" href="https://wa.me/5492302457818?text=Hola%20Gina!%20Me%20contacto%20desde%20tu%20p%C3%A1gina%20web%20para%20hacerte%20una%20consulta." target="_blank" rel="noopener noreferrer" class="md:hidden inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-sm">
+                        <i class="ph-fill ph-whatsapp-logo text-base"></i> WhatsApp
+                    </a>
+                </div>
+
+                <!-- 3 NAVIGATION BUTTONS FOR WINDOWS (As requested: "Que tenga 3 botones para dirigirme por ventanas") -->
+                <nav aria-label="Navegación por ventanas" class="grid grid-cols-3 gap-2 bg-brand-100/90 p-1.5 rounded-2xl border border-brand-200">
+                    <button id="tabBtn-inicio" onclick="switchWindow('inicio')" class="window-tab-active flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200">
+                        <i class="ph-fill ph-house-line text-base sm:text-lg"></i>
+                        <span>Propiedades</span>
+                    </button>
+
+                    <button id="tabBtn-contacto" onclick="switchWindow('contacto')" class="window-tab-inactive flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200">
+                        <i class="ph-fill ph-Chats-Circle text-base sm:text-lg"></i>
+                        <span>Contacto y Citas</span>
+                    </button>
+
+                    <button id="tabBtn-subir" onclick="switchWindow('subir')" class="window-tab-inactive flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 relative">
+                        <i class="ph-fill ph-plus-circle text-base sm:text-lg"></i>
+                        <span>Subir Propiedad</span>
+                        <span class="hidden sm:inline-block w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
+                    </button>
+                </nav>
+
+                <!-- Desktop Quick CTA for New Clients -->
+                <div class="hidden lg:flex items-center gap-3">
+                    <button onclick="openDirectWhatsApp('Hola Gina! Soy nuevo cliente y me gustaría agendar una cita con vos.')" class="inline-flex items-center gap-2 bg-brand-700 hover:bg-brand-800 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-soft transition-all hover:-translate-y-0.5">
+                        <i class="ph-fill ph-whatsapp-logo text-lg text-emerald-300"></i>
+                        <span>Agendar Cita</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- WINDOW 1: LANDING + BUSCADOR ÁGIL + CATÁLOGO DE PROPIEDADES          -->
+    <!-- ===================================================================== -->
+    <main id="window-inicio" class="window-section flex-grow">
+        
+        <!-- HERO LANDING SECTION -->
+        <section class="relative overflow-hidden pt-6 pb-12 md:py-14 border-b border-brand-200/70">
+            <!-- Decorative floral SVG background corner -->
+            <svg class="hidden lg:block absolute -right-16 -top-16 w-96 h-96 text-brand-200/50 pointer-events-none" viewBox="0 0 200 200" fill="currentColor">
+                <path d="M140 20 C110 40 90 80 80 140 C120 130 160 100 180 60 C160 50 150 35 140 20 Z" />
+                <path d="M90 10 C70 40 60 80 65 130 C95 100 115 65 120 25 C105 20 98 15 90 10 Z" opacity="0.6"/>
+            </svg>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                    
+                    <!-- Left Column: Brand Message + 3 Key Pillars -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-100 border border-brand-300 text-brand-700 text-xs sm:text-sm font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+                            Asesoramiento Inmobiliario Integral
+                        </div>
+
+                        <h1 class="font-brand text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-900 leading-[1.08]">
+                            Encontrá el lugar donde empieza <span class="text-brand-600 italic font-normal">tu próxima historia.</span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-brand-800/80 max-w-2xl leading-relaxed">
+                            En <strong>Gina Pepa Inmobiliaria</strong> te acompañamos en cada paso de la compra, venta o alquiler de tu propiedad con cercanía, transparencia y compromiso real.
+                        </p>
+
+                        <!-- 3 PILLARS REQUESTED BY USER -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2">
+                            <!-- Pillar 1 -->
+                            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-all">
+                                <div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-xl mb-2.5 shadow-inner">
+                                    🏠
+                                </div>
+                                <h2 class="font-bold text-sm text-brand-900 leading-snug">
+                                    Servicio inmobiliario personalizado
+                                </h2>
+                                <p class="text-xs text-brand-700/75 mt-1">
+                                    Trato directo y seguimiento a medida para cada cliente.
+                                </p>
+                            </div>
+
+                            <!-- Pillar 2 -->
+                            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-all">
+                                <div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-xl mb-2.5 shadow-inner">
+                                    🔑
+                                </div>
+                                <h2 class="font-bold text-sm text-brand-900 leading-snug">
+                                    Seguridad para tu inversión
+                                </h2>
+                                <p class="text-xs text-brand-700/75 mt-1">
+                                    Operaciones claras, respaldo legal y tasación justa.
+                                </p>
+                            </div>
+
+                            <!-- Pillar 3 -->
+                            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-brand-200 shadow-sm hover:border-brand-400 transition-all">
+                                <div class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-xl mb-2.5 shadow-inner">
+                                    🔍
+                                </div>
+                                <h2 class="font-bold text-sm text-brand-900 leading-snug">
+                                    Te ayudo a encontrar tu hogar ideal
+                                </h2>
+                                <p class="text-xs text-brand-700/75 mt-1">
+                                    Búsqueda activa según tus necesidades y presupuesto.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Hero CTA Buttons -->
+                        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                            <a href="#buscador-agil" class="inline-flex items-center gap-2 bg-brand-700 hover:bg-brand-800 text-white font-semibold px-6 py-3.5 rounded-2xl shadow-glow transition-all hover:-translate-y-0.5 text-sm sm:text-base">
+                                <i class="ph-bold ph-magnifying-glass"></i>
+                                <span>Explorar Propiedades</span>
+                            </a>
+                            <button onclick="openDirectWhatsApp('¡Hola Gina! Vi tu página web y me gustaría agendar una cita para conversar sobre una propiedad.')" class="inline-flex items-center gap-2 bg-white hover:bg-brand-100 text-brand-800 font-semibold px-5 py-3.5 rounded-2xl border border-brand-300 shadow-sm transition-all text-sm sm:text-base">
+                                <i class="ph-fill ph-whatsapp-logo text-emerald-600 text-xl"></i>
+                                <span>¡Contactate conmigo y agendamos una cita!</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Visual Presentation Card inspired by Gina's Story/Flyer -->
+                    <div class="lg:col-span-5">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <!-- Decorative background frame -->
+                            <div class="absolute -inset-2 bg-gradient-to-tr from-brand-700 via-brand-500 to-brand-300 rounded-3xl opacity-20 blur-lg"></div>
+                            
+                            <div class="relative bg-white rounded-3xl p-5 sm:p-6 border border-brand-200 shadow-card overflow-hidden">
+                                <!-- Top badge -->
+                                <div class="flex items-center justify-between border-b border-brand-100 pb-4 mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 text-white flex items-center justify-center font-brand font-bold text-2xl shadow-sm">
+                                            GP
+                                        </div>
+                                        <div>
+                                            <h3 class="font-brand font-bold text-xl text-brand-900 leading-tight">Gina Pepa</h3>
+                                            <p class="text-xs font-medium text-brand-600">Asesora & Martillera Inmobiliaria</p>
+                                        </div>
+                                    </div>
+                                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Disponible
+                                    </span>
+                                </div>
+
+                                <!-- Featured Showcase Mini-Grid recreating the aesthetic of her flyers -->
+                                <div class="grid grid-cols-2 gap-2.5 mb-4">
+                                    <div class="relative rounded-2xl overflow-hidden h-36 group cursor-pointer" onclick="openPropertyModal(1)">
+                                        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80" alt="Casa Quinta" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/7C3262/FFFFFF?text=Casa+Quinta'">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-brand-900/85 via-brand-900/20 to-transparent flex flex-col justify-end p-3">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider bg-brand-600 text-white px-2 py-0.5 rounded-md w-fit mb-1">Venta</span>
+                                            <p class="text-white font-brand font-bold text-base leading-tight">Hermosa Casa Quinta</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative rounded-2xl overflow-hidden h-36 group cursor-pointer" onclick="openPropertyModal(2)">
+                                        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=600&q=80" alt="Casa con Locales" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/64234E/FFFFFF?text=Casa+y+Locales'">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-brand-900/85 via-brand-900/20 to-transparent flex flex-col justify-end p-3">
+                                            <span class="text-[10px] font-bold uppercase tracking-wider bg-brand-600 text-white px-2 py-0.5 rounded-md w-fit mb-1">Oportunidad</span>
+                                            <p class="text-white font-brand font-bold text-base leading-tight">Casa + 2 Locales</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Direct Callout Box matching Image 1 ("¡Contactate conmigo y agendamos una cita!") -->
+                                <div class="bg-gradient-to-br from-brand-50 to-brand-100/90 rounded-2xl p-4 border border-brand-200 text-center">
+                                    <p class="font-bold text-brand-800 text-base sm:text-lg leading-snug">
+                                        ¡Contactate conmigo y agendamos una cita!
+                                    </p>
+                                    <p class="text-xs text-brand-600 mt-1 mb-3">
+                                        Atención directa por WhatsApp para consultas, visitas o tasaciones
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row gap-2 justify-center">
+                                        <button onclick="openDirectWhatsApp('¡Hola Gina! Quiero agendar una cita con vos.')" class="flex-1 inline-flex items-center justify-center gap-2 bg-brand-700 hover:bg-brand-800 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-all text-sm">
+                                            <i class="ph-fill ph-whatsapp-logo text-lg text-emerald-300"></i>
+                                            <span>WhatsApp Directo</span>
+                                        </button>
+                                        <button onclick="switchWindow('contacto')" class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-brand-200/50 text-brand-800 font-semibold py-2.5 px-4 rounded-xl border border-brand-300 text-sm transition-all">
+                                            <i class="ph ph-phone-call text-base"></i>
+                                            <span>Nuevos Clientes</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- AGILE SEARCH & FILTER BAR -->
+        <section id="buscador-agil" class="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-brand-200 shadow-card -mt-6 lg:-mt-12 relative z-20">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-brand-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-brand-600">Buscador Ágil</span>
+                        <h2 class="font-brand text-2xl sm:text-3xl font-bold text-brand-900">Encontrá tu propiedad ideal al instante</h2>
+                    </div>
+                    <!-- Operation Main Switch (Todas / En Venta / En Alquiler) -->
+                    <div class="inline-flex bg-brand-100 p-1.5 rounded-2xl border border-brand-200 self-start md:self-auto">
+                        <button onclick="setOperationFilter('todos')" id="opBtn-todos" class="op-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-700 text-white shadow-sm">
+                            Todas (<span id="count-todos">0</span>)
+                        </button>
+                        <button onclick="setOperationFilter('Venta')" id="opBtn-Venta" class="op-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-brand-800 hover:bg-brand-200/60">
+                            En Venta (<span id="count-venta">0</span>)
+                        </button>
+                        <button onclick="setOperationFilter('Alquiler')" id="opBtn-Alquiler" class="op-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-brand-800 hover:bg-brand-200/60">
+                            En Alquiler (<span id="count-alquiler">0</span>)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Input & Category Selectors -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 pt-4">
+                    <!-- Instant Text Input -->
+                    <div class="md:col-span-5 relative">
+                        <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-brand-600 text-lg"></i>
+                        <input 
+                            type="text" 
+                            id="agileSearchInput" 
+                            oninput="renderProperties()"
+                            placeholder="Buscar por ej: 'pileta', 'local', '3 habitaciones', 'quinta', 'avenida'..." 
+                            class="w-full pl-11 pr-9 py-3 bg-brand-50/70 border border-brand-200 rounded-2xl text-sm text-brand-900 placeholder-brand-500/70 focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 transition-all"
+                        >
+                        <button id="clearSearchBtn" onclick="clearSearchInput()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-brand-500 hover:text-brand-800">
+                            <i class="ph-fill ph-x-circle text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Property Type Select -->
+                    <div class="md:col-span-3">
+                        <select id="typeFilterSelect" onchange="renderProperties()" class="w-full px-4 py-3 bg-brand-50/70 border border-brand-200 rounded-2xl text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                            <option value="todos">🏠 Todos los tipos</option>
+                            <option value="Casa">🏡 Casas Familiares</option>
+                            <option value="Quinta">🌳 Casas Quinta</option>
+                            <option value="Casa + Local">🏪 Casa con Locales</option>
+                            <option value="Departamento">🏢 Departamentos</option>
+                            <option value="Local Comercial">🛍️ Locales Comerciales</option>
+                        </select>
+                    </div>
+
+                    <!-- Minimum Bedrooms Select -->
+                    <div class="md:col-span-2">
+                        <select id="roomsFilterSelect" onchange="renderProperties()" class="w-full px-4 py-3 bg-brand-50/70 border border-brand-200 rounded-2xl text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                            <option value="0">🛏️ Dormitorios (Todos)</option>
+                            <option value="1">1+ Dormitorios</option>
+                            <option value="2">2+ Dormitorios</option>
+                            <option value="3">3+ Dormitorios</option>
+                        </select>
+                    </div>
+
+                    <!-- Reset Filters Button -->
+                    <div class="md:col-span-2">
+                        <button onclick="resetAllFilters()" class="w-full h-full flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border border-brand-300 bg-white hover:bg-brand-100 text-brand-700 font-semibold text-sm transition-colors">
+                            <i class="ph ph-arrows-counter-clockwise"></i>
+                            <span>Limpiar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Feature Pills (Agile Tags) -->
+                <div class="flex items-center gap-2 overflow-x-auto pt-4 pb-1 no-scrollbar">
+                    <span class="text-xs font-semibold text-brand-600 flex-shrink-0 mr-1">Filtros rápidos:</span>
+                    <button onclick="toggleQuickTag('jardin')" id="tag-jardin" class="quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all">
+                        🌱 Con Jardín / Patio
+                    </button>
+                    <button onclick="toggleQuickTag('comercial')" id="tag-comercial" class="quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all">
+                        🏪 Apto Comercio / Local
+                    </button>
+                    <button onclick="toggleQuickTag('pileta')" id="tag-pileta" class="quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all">
+                        🏊 Con Pileta
+                    </button>
+                    <button onclick="toggleQuickTag('garage')" id="tag-garage" class="quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all">
+                        🚗 Con Garage
+                    </button>
+                    <button onclick="toggleQuickTag('oportunidad')" id="tag-oportunidad" class="quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all">
+                        🏷️ Gran Oportunidad
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULTS COUNTER & SUBIR SHORTCUT -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mt-7 mb-5 px-1">
+                <p id="resultsStatusText" class="text-sm font-medium text-brand-800">
+                    Mostrando todas las propiedades disponibles
+                </p>
+                <button onclick="switchWindow('subir')" class="text-xs sm:text-sm font-semibold text-brand-700 hover:text-brand-900 flex items-center gap-1.5 bg-brand-100 hover:bg-brand-200 px-3.5 py-1.5 rounded-xl transition-colors">
+                    <i class="ph-bold ph-plus"></i> ¿Sos Gina? Subir nueva propiedad acá
+                </button>
+            </div>
+
+            <!-- PROPERTIES GRID -->
+            <div id="propertiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- EMPTY STATE WHEN NO FILTER MATCHES -->
+            <div id="emptySearchState" class="hidden bg-white rounded-3xl p-10 text-center border border-brand-200 my-6 max-w-lg mx-auto">
+                <div class="w-16 h-16 rounded-2xl bg-brand-100 text-brand-700 flex items-center justify-center mx-auto mb-4 text-3xl">
+                    🔍
+                </div>
+                <h3 class="font-brand text-2xl font-bold text-brand-900">No encontramos propiedades con ese filtro exacto</h3>
+                <p class="text-sm text-brand-700/80 mt-2 mb-5">
+                    Pero no te preocupes: <strong>te ayudo a encontrar tu hogar ideal</strong>. Escribime por WhatsApp contándome qué buscás o limpiá los filtros.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="resetAllFilters()" class="px-5 py-2.5 rounded-xl bg-brand-100 text-brand-800 font-semibold text-sm hover:bg-brand-200 transition-colors">
+                        Ver todas las propiedades
+                    </button>
+                    <button onclick="openDirectWhatsApp('Hola Gina! Estoy buscando una propiedad con características específicas, ¿me ayudás a encontrarla?')" class="px-5 py-2.5 rounded-xl bg-brand-700 text-white font-semibold text-sm hover:bg-brand-800 transition-colors flex items-center gap-2">
+                        <i class="ph-fill ph-whatsapp-logo text-lg"></i> Consultar búsqueda personalizada
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNER FOR NEW CLIENTS AT THE BOTTOM OF CATALOG -->
+        <section class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-brand-800 via-brand-700 to-brand-600 rounded-3xl p-6 sm:p-10 text-white shadow-glow relative overflow-hidden">
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-8 space-y-2">
+                        <span class="inline-block text-xs font-bold uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full">
+                            Línea Exclusiva para Nuevos Clientes
+                        </span>
+                        <h2 class="font-brand text-3xl sm:text-4xl font-bold">
+                            ¿Querés poner tu propiedad en venta o alquiler?
+                        </h2>
+                        <p class="text-brand-100 text-sm sm:text-base max-w-2xl">
+                            Tasamos tu inmueble, armamos las fichas profesionales con fotografía destacada y gestionamos cada visita con total seguridad para tu inversión.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end">
+                        <button onclick="switchWindow('contacto')" class="w-full inline-flex items-center justify-center gap-2 bg-white text-brand-800 hover:bg-brand-50 font-bold px-6 py-3.5 rounded-2xl shadow-md transition-all text-sm sm:text-base">
+                            <i class="ph-fill ph-calendar-check text-xl text-brand-600"></i>
+                            <span>Ir a Ventana de Contacto</span>
+                        </button>
+                        <button onclick="openDirectWhatsApp('Hola Gina! Soy nuevo cliente y quiero tasar/publicar mi propiedad con tu inmobiliaria.')" class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition-all text-sm">
+                            <i class="ph-fill ph-whatsapp-logo text-lg"></i>
+                            <span id="bannerPhoneText">WhatsApp: 2302 45-7818</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- WINDOW 2: CONTACTO, CITAS Y ATENCIÓN A NUEVOS CLIENTES                -->
+    <!-- ===================================================================== -->
+    <section id="window-contacto" class="window-section hidden flex-grow py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Header -->
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-brand-100 border border-brand-300 text-brand-700 text-xs font-bold uppercase tracking-wider mb-3">
+                    <i class="ph-fill ph-address-book"></i> Atención Personalizada
+                </span>
+                <h2 class="font-brand text-4xl sm:text-5xl font-bold text-brand-900">
+                    ¡Contactate conmigo y agendamos una cita!
+                </h2>
+                <p class="text-brand-700/80 mt-2 text-sm sm:text-base">
+                    Tanto si buscás tu próximo hogar como si sos un <strong>nuevo cliente</strong> que desea confiar su propiedad para venta o alquiler, estoy para asesorarte.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Column: Direct Contact Cards & New Clients Number -->
+                <div class="lg:col-span-5 space-y-4">
+                    
+                    <!-- Card 1: Número de Contacto Nuevos Clientes -->
+                    <div class="bg-gradient-to-br from-brand-700 to-brand-900 text-white rounded-3xl p-6 shadow-glow">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full">
+                                Atención Nuevos Clientes
+                            </span>
+                            <i class="ph-fill ph-phone-incoming text-2xl text-brand-200"></i>
+                        </div>
+                        <p class="text-xs text-brand-200 uppercase tracking-wider">Línea Directa & WhatsApp</p>
+                        <p id="contactCardPhoneNumber" class="font-brand text-3xl sm:text-4xl font-bold tracking-wide my-1">
+                            02302 45-7818
+                        </p>
+                        <p class="text-xs text-brand-100/90 mb-5">
+                            Consultas por tasaciones, consignación de inmuebles, contratos de alquiler y asesoramiento de inversión.
+                        </p>
+                        <div class="space-y-2.5">
+                            <button onclick="openDirectWhatsApp('¡Hola Gina! Soy nuevo cliente y me gustaría coordinar una entrevista con vos.')" class="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                                <i class="ph-fill ph-whatsapp-logo text-xl"></i>
+                                <span>Iniciar Chat por WhatsApp</span>
+                            </button>
+                            <button onclick="copyPhoneNumber()" class="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all">
+                                <i class="ph ph-copy text-base"></i>
+                                <span id="copyPhoneBtnText">Copiar número de teléfono</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: The 3 Commitments -->
+                    <div class="bg-white rounded-3xl p-6 border border-brand-200 shadow-soft space-y-4">
+                        <h3 class="font-brand text-2xl font-bold text-brand-900 border-b border-brand-100 pb-2">
+                            ¿Por qué elegir Gina Pepa Inmobiliaria?
+                        </h3>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl bg-brand-50 p-2 rounded-xl border border-brand-200">🏠</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-brand-900">Servicio inmobiliario personalizado</h4>
+                                <p class="text-xs text-brand-700/80">Te acompaño personalmente en cada visita, negociación y firma.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl bg-brand-50 p-2 rounded-xl border border-brand-200">🔑</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-brand-900">Seguridad para tu inversión</h4>
+                                <p class="text-xs text-brand-700/80">Verificación documental exhaustiva y contratos transparentes.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-xl bg-brand-50 p-2 rounded-xl border border-brand-200">🔍</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-brand-900">Te ayudo a encontrar tu hogar ideal</h4>
+                                <p class="text-xs text-brand-700/80">Seleccionamos propiedades que realmente se adapten a tu proyecto de vida.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Appointment & New Client Form (Sends formatted sheet to WhatsApp) -->
+                <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-brand-200 shadow-card">
+                    <h3 class="font-brand text-2xl sm:text-3xl font-bold text-brand-900 mb-1">
+                        Agendar una Cita o Consulta Rápida
+                    </h3>
+                    <p class="text-xs sm:text-sm text-brand-600 mb-6">
+                        Completá tus datos y el motivo de contacto; al enviar se abrirá automáticamente el WhatsApp de Gina con tu ficha de consulta lista.
+                    </p>
+
+                    <form onsubmit="handleContactFormSubmit(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Tu Nombre y Apellido *</label>
+                                <input type="text" id="clientName" required placeholder="Ej: María Rodríguez" class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Tu Teléfono / Celular *</label>
+                                <input type="tel" id="clientPhone" required placeholder="Ej: 2302 55-1234" class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Motivo de tu consulta *</label>
+                                <select id="clientReason" class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                                    <option value="Quiero agendar una cita para ver una propiedad">📅 Agendar visita a una propiedad</option>
+                                    <option value="Soy nuevo cliente y quiero VENDER mi propiedad">🏡 Quiero VENDER mi propiedad (Nuevo Cliente)</option>
+                                    <option value="Soy nuevo cliente y quiero poner en ALQUILER mi propiedad">🔑 Quiero poner en ALQUILER mi propiedad</option>
+                                    <option value="Busco alquilar una vivienda o local">🔍 Estoy buscando ALQUILAR</option>
+                                    <option value="Busco comprar / invertir">💼 Busco COMPRAR / Invertir</option>
+                                    <option value="Necesito una tasación profesional">📋 Solicitar Tasación</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Horario preferido de contacto</label>
+                                <select id="clientSchedule" class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                                    <option value="Por la mañana (9 a 12:30 hs)">☀️ Por la mañana (9 a 12:30 hs)</option>
+                                    <option value="Por la tarde (16 a 20 hs)">🌤️ Por la tarde (16 a 20 hs)</option>
+                                    <option value="En cualquier horario disponible">🕒 Cualquier horario</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Mensaje o detalles de lo que buscás</label>
+                            <textarea id="clientMessage" rows="3" placeholder="Contame qué propiedad te interesó o qué características tiene el inmueble que querés tasar/publicar..." class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600"></textarea>
+                        </div>
+
+                        <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                            <button type="submit" class="w-full sm:flex-1 py-3.5 px-6 rounded-2xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm sm:text-base shadow-glow flex items-center justify-center gap-2 transition-all">
+                                <i class="ph-fill ph-whatsapp-logo text-xl text-emerald-300"></i>
+                                <span>Enviar Consulta y Agendar por WhatsApp</span>
+                            </button>
+                            <button type="button" onclick="switchWindow('inicio')" class="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-brand-100 hover:bg-brand-200 text-brand-800 font-semibold text-sm transition-colors">
+                                Volver al Catálogo
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- WINDOW 3: PANEL PARA QUE GINA SUBA SUS PROPIEDADES ("SUBIR PROPIEDAD")-->
+    <!-- ===================================================================== -->
+    <section id="window-subir" class="window-section hidden flex-grow py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        
+        <!-- Header banner explaining the tool for Gina -->
+        <div class="bg-gradient-to-r from-brand-800 to-brand-600 text-white rounded-3xl p-6 sm:p-8 mb-8 shadow-soft flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-1.5 bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="ph-fill ph-sparkle"></i> Panel de Autogestión Inmobiliaria
+                </div>
+                <h2 class="font-brand text-3xl sm:text-4xl font-bold">
+                    Cargar Nueva Propiedad al Catálogo
+                </h2>
+                <p class="text-brand-100 text-sm mt-1 max-w-2xl">
+                    Desde esta ventana, Gina puede subir nuevas casas, quintas, departamentos o locales (en <strong>Venta</strong> o <strong>Alquiler</strong>), elegir los íconos característicos de sus flyers y publicarlos al instante.
+                </p>
+            </div>
+            <button onclick="switchWindow('inicio')" class="flex-shrink-0 inline-flex items-center gap-2 bg-white text-brand-800 hover:bg-brand-50 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm">
+                <i class="ph ph-eye text-base"></i> Ver Catálogo Público
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Form: Upload Details -->
+            <form id="uploadPropertyForm" onsubmit="handleNewPropertySubmit(event)" class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-brand-200 shadow-card space-y-5">
+                <h3 class="font-brand text-2xl font-bold text-brand-900 border-b border-brand-100 pb-3">
+                    1. Datos Principales del Inmueble
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Título de la Propiedad *</label>
+                        <input type="text" id="newPropTitle" oninput="updateLivePreview()" required placeholder="Ej: Casa Amplia con Jardín en Centro" class="w-full px-4 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Tipo de Operación *</label>
+                        <select id="newPropOperation" onchange="updateLivePreview()" class="w-full px-4 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm font-bold text-brand-800 focus:outline-none focus:border-brand-600">
+                            <option value="Venta">🏷️ SE VENDE (Venta)</option>
+                            <option value="Alquiler">🔑 SE ALQUILA (Alquiler)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Categoría *</label>
+                        <select id="newPropCategory" onchange="updateLivePreview()" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                            <option value="Casa">🏡 Casa</option>
+                            <option value="Quinta">🌳 Casa Quinta</option>
+                            <option value="Casa + Local">🏪 Casa con Local</option>
+                            <option value="Departamento">🏢 Departamento</option>
+                            <option value="Local Comercial">🛍️ Local Comercial</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Precio / Valor</label>
+                        <input type="text" id="newPropPrice" oninput="updateLivePreview()" placeholder="Ej: USD 68.000 o Consultar" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Ubicación / Zona *</label>
+                        <input type="text" id="newPropLocation" oninput="updateLivePreview()" required placeholder="Ej: Av. Principal / Zona Centro" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Dormitorios</label>
+                        <input type="number" id="newPropBeds" oninput="updateLivePreview()" min="0" max="12" value="2" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Baños</label>
+                        <input type="number" id="newPropBaths" oninput="updateLivePreview()" min="1" max="10" value="1" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Etiqueta Destacada</label>
+                        <select id="newPropBadge" onchange="updateLivePreview()" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm font-medium text-brand-900 focus:outline-none focus:border-brand-600">
+                            <option value="Excelente Ubicación">📍 Excelente Ubicación</option>
+                            <option value="Gran Oportunidad">🏷️ Gran Oportunidad</option>
+                            <option value="Excelente Precio">💎 Excelente Precio</option>
+                            <option value="Mucho Potencial">✨ Mucho Potencial</option>
+                            <option value="Ingreso Inmediato">🔑 Ingreso Inmediato</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Photo Upload (File from phone/PC OR preset gallery) -->
+                <div class="pt-2">
+                    <h3 class="font-brand text-2xl font-bold text-brand-900 border-b border-brand-100 pb-2 mb-3">
+                        2. Fotografía de la Propiedad
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                        <label class="flex flex-col items-center justify-center border-2 border-dashed border-brand-300 hover:border-brand-600 rounded-2xl p-4 bg-brand-50/60 cursor-pointer transition-colors text-center">
+                            <i class="ph-duotone ph-camera-plus text-3xl text-brand-600 mb-1"></i>
+                            <span class="text-xs font-bold text-brand-800">Subir foto desde el celular o PC</span>
+                            <span class="text-[11px] text-brand-600">JPG, PNG o WEBP</span>
+                            <input type="file" id="newPropImageFile" accept="image/*" onchange="handleImageFileSelect(event)" class="hidden">
+                        </label>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">O pegar link de foto / elegir ejemplo:</label>
+                            <input type="url" id="newPropImageUrl" oninput="updateLivePreview()" placeholder="https://..." class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-xs focus:outline-none focus:border-brand-600 mb-2">
+                            <div class="flex gap-1.5">
+                                <button type="button" onclick="setSamplePhoto('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80')" class="text-[11px] bg-brand-100 hover:bg-brand-200 text-brand-800 px-2.5 py-1 rounded-lg font-medium">Foto Casa 1</button>
+                                <button type="button" onclick="setSamplePhoto('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80')" class="text-[11px] bg-brand-100 hover:bg-brand-200 text-brand-800 px-2.5 py-1 rounded-lg font-medium">Foto Quinta</button>
+                                <button type="button" onclick="setSamplePhoto('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80')" class="text-[11px] bg-brand-100 hover:bg-brand-200 text-brand-800 px-2.5 py-1 rounded-lg font-medium">Foto Dpto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Amenities Checkboxes (Matching Gina's Flyers Icons) -->
+                <div class="pt-2">
+                    <h3 class="font-brand text-2xl font-bold text-brand-900 border-b border-brand-100 pb-2 mb-3">
+                        3. Comodidades para la Ficha (Estilo Flyer GP)
+                    </h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs font-medium text-brand-900">
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Living comedor" checked onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🛋️ Living comedor</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Cocina equipada" checked onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🍳 Cocina comedor</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Garage" checked onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🚗 Garage / Cochera</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Patio con parrilla" checked onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🔥 Patio con parrilla</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Hermoso jardín" onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🌳 Hermoso jardín</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Lavadero" onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🧺 Con Lavadero</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Estufa a leña" onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🪵 Estufa a leña</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Pileta" onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🏊 Pileta</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 cursor-pointer hover:bg-brand-100">
+                            <input type="checkbox" name="propAmenity" value="Local comercial" onchange="updateLivePreview()" class="accent-brand-700 w-4 h-4">
+                            <span>🏪 Local comercial</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1.5">Descripción detallada para la ficha *</label>
+                    <textarea id="newPropDescription" oninput="updateLivePreview()" required rows="3" placeholder="Ej: Propiedad muy completa, excelente iluminación natural, todos los servicios conectados y gran potencial..." class="w-full px-4 py-3 rounded-xl bg-brand-50 border border-brand-200 text-sm focus:outline-none focus:border-brand-600"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-brand-700 to-brand-600 hover:from-brand-800 hover:to-brand-700 text-white font-bold text-base shadow-glow flex items-center justify-center gap-2 transition-all">
+                    <i class="ph-bold ph-check-circle text-xl"></i>
+                    <span>Publicar Propiedad en la Web Ahora</span>
+                </button>
+            </form>
+
+            <!-- Right Column: Live Flyer & Card Preview + Manage Uploaded List -->
+            <div class="lg:col-span-5 space-y-6 sticky top-24">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-brand-200 shadow-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Vista Previa en Vivo (Estilo Flyer GP)
+                        </span>
+                        <span class="text-[11px] font-semibold text-brand-500">Automático</span>
+                    </div>
+
+                    <!-- Flyer-style Preview Card -->
+                    <div class="rounded-2xl overflow-hidden border-2 border-brand-600/30 bg-brand-50 shadow-sm">
+                        <div class="relative h-52 bg-brand-200">
+                            <img id="previewImg" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" alt="Vista previa" class="w-full h-full object-cover">
+                            <!-- Top Left Operation Ribbon like "VENDO" in Image 2 -->
+                            <div id="previewOpRibbon" class="absolute top-3 left-0 bg-brand-700 text-white font-brand font-bold text-lg tracking-wider px-5 py-1 rounded-r-full shadow-md uppercase">
+                                SE VENDE
+                            </div>
+                            <!-- Top Right GP Mini Badge -->
+                            <div class="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-xl border border-brand-200 text-center shadow-sm">
+                                <span class="font-brand font-bold text-sm text-brand-800 block leading-none">GP</span>
+                                <span class="text-[8px] font-bold uppercase tracking-widest text-brand-600">Gina Pepa</span>
+                            </div>
+                            <!-- Bottom Badge -->
+                            <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm text-brand-800 text-xs font-bold px-3 py-1 rounded-full shadow">
+                                <span id="previewBadge">📍 Excelente Ubicación</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-white">
+                            <div class="flex items-baseline justify-between gap-2">
+                                <span id="previewCategory" class="text-[11px] font-bold uppercase tracking-wider text-brand-600">Casa</span>
+                                <span id="previewPrice" class="font-brand font-bold text-lg text-brand-800">Consultar valor</span>
+                            </div>
+                            <h4 id="previewTitle" class="font-brand font-bold text-2xl text-brand-900 leading-tight mt-0.5">
+                                Casa Amplia con Jardín
+                            </h4>
+                            <p id="previewLocation" class="text-xs text-brand-600 flex items-center gap-1 mt-1">
+                                <i class="ph-fill ph-map-pin"></i> Av. Principal / Zona Centro
+                            </p>
+
+                            <div id="previewAmenities" class="flex flex-wrap gap-1.5 my-3 pt-3 border-t border-brand-100">
+                                <!-- Filled dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick List of Active Properties with Delete/Manage Option for Gina -->
+                <div class="bg-white rounded-3xl p-5 border border-brand-200 shadow-soft">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-brand font-bold text-xl text-brand-900">Propiedades Cargadas (<span id="adminTotalCount">0</span>)</h4>
+                        <button onclick="restoreDefaultProperties()" class="text-xs text-brand-600 hover:text-brand-900 underline">Restaurar originales</button>
+                    </div>
+                    <p class="text-xs text-brand-600 mb-3">Podés ver la ficha, descargar el flyer para Instagram (historia o feed) o quitar propiedades desde acá:</p>
+                    <div id="adminPropertiesList" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL: FICHA TÉCNICA COMPLETA DE LA PROPIEDAD                         -->
+    <!-- ===================================================================== -->
+    <div id="propertySheetModal" class="fixed inset-0 z-50 hidden bg-brand-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-brand-200 my-auto animate-[fadeSlideIn_0.25s_ease-out]">
+            
+            <!-- Modal Header Styled Like Gina Pepa Flyers -->
+            <div class="relative h-64 sm:h-80 bg-brand-900">
+                <img id="modalPropImg" src="" alt="Propiedad" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-900/90 via-brand-900/25 to-transparent"></div>
+                
+                <!-- Top bar inside modal -->
+                <div class="absolute top-4 inset-x-4 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span id="modalPropOpBadge" class="bg-brand-600 text-white font-brand font-bold text-lg px-4 py-1 rounded-full shadow-md uppercase tracking-wider">
+                            SE VENDE
+                        </span>
+                        <span id="modalPropCode" class="bg-white/90 backdrop-blur-sm text-brand-900 text-xs font-bold px-3 py-1.5 rounded-full">
+                            FICHA #GP-101
+                        </span>
+                    </div>
+                    <button onclick="closePropertyModal()" class="w-10 h-10 rounded-full bg-white/90 hover:bg-white text-brand-900 flex items-center justify-center shadow-lg transition-transform hover:scale-105">
+                        <i class="ph-bold ph-x text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Bottom Info over Image -->
+                <div class="absolute bottom-4 inset-x-5 text-white flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                    <div>
+                        <span id="modalPropHighlight" class="inline-block text-xs font-bold uppercase tracking-widest bg-brand-500/80 px-2.5 py-0.5 rounded-md mb-1">
+                            Excelente Oportunidad
+                        </span>
+                        <h3 id="modalPropTitle" class="font-brand text-3xl sm:text-4xl font-bold leading-tight">
+                            Título de la Propiedad
+                        </h3>
+                        <p id="modalPropLocation" class="text-xs sm:text-sm text-brand-100 flex items-center gap-1 mt-0.5">
+                            <i class="ph-fill ph-map-pin"></i> Ubicación
+                        </p>
+                    </div>
+                    <div class="bg-white/95 text-brand-900 px-4 py-2 rounded-2xl shadow-md self-start sm:self-end">
+                        <span class="block text-[10px] font-bold uppercase tracking-wider text-brand-600">Valor / Operación</span>
+                        <span id="modalPropPrice" class="font-brand text-2xl font-bold text-brand-800">Consultar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body: Flyer-Style Feature Icons + Description -->
+            <div class="p-5 sm:p-7 space-y-6 max-h-[65vh] overflow-y-auto">
+                
+                <!-- Key Specs Strip -->
+                <div class="grid grid-cols-3 gap-3 bg-brand-50 p-3.5 rounded-2xl border border-brand-200 text-center">
+                    <div>
+                        <span class="text-xs text-brand-600 block">Tipo de Propiedad</span>
+                        <strong id="modalPropType" class="text-sm sm:text-base text-brand-900">Casa</strong>
+                    </div>
+                    <div class="border-x border-brand-200">
+                        <span class="text-xs text-brand-600 block">Dormitorios</span>
+                        <strong id="modalPropBeds" class="text-sm sm:text-base text-brand-900">3 Dormitorios</strong>
+                    </div>
+                    <div>
+                        <span class="text-xs text-brand-600 block">Baños</span>
+                        <strong id="modalPropBaths" class="text-sm sm:text-base text-brand-900">2 Baños</strong>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <h4 class="font-brand text-xl font-bold text-brand-900 mb-1.5">Descripción de la Ficha</h4>
+                    <p id="modalPropDesc" class="text-sm text-brand-800/90 leading-relaxed"></p>
+                </div>
+
+                <!-- Flyer Features List -->
+                <div>
+                    <h4 class="font-brand text-xl font-bold text-brand-900 mb-2.5">Características y Comodidades</h4>
+                    <div id="modalPropAmenities" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+
+                <!-- Direct WhatsApp Action with the Property Sheet pre-loaded -->
+                <div class="bg-gradient-to-r from-brand-100 to-brand-50 p-4 sm:p-5 rounded-2xl border border-brand-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-700 text-white flex items-center justify-center font-brand font-bold text-xl flex-shrink-0">
+                            GP
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-brand-900">¿Te interesa esta propiedad?</p>
+                            <p class="text-xs text-brand-700">Enviá la ficha directa al WhatsApp de Gina Pepa para coordinar una visita.</p>
+                        </div>
+                    </div>
+                    <button id="modalWhatsappBtn" class="w-full sm:w-auto flex-shrink-0 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-5 py-3.5 rounded-xl shadow-md transition-all">
+                        <i class="ph-fill ph-whatsapp-logo text-xl"></i>
+                        <span>Consultar por esta Ficha</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL: CONFIGURAR NÚMERO DE WHATSAPP (ÚTIL PARA PERSONALIZAR DEMO)     -->
+    <!-- ===================================================================== -->
+    <div id="phoneConfigModal" class="fixed inset-0 z-50 hidden bg-brand-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 border border-brand-200 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-brand-100 pb-3 mb-4">
+                <h3 class="font-brand text-2xl font-bold text-brand-900">Configurar Teléfono de Gina</h3>
+                <button onclick="closePhoneConfigModal()" class="text-brand-500 hover:text-brand-800">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+            <p class="text-xs text-brand-700 mb-4">
+                Tomamos el número del cartel de tus fotos (<strong>02302 45-7818</strong>). Si querés actualizarlo por su celular directo de WhatsApp para probar el envío de las fichas, ingresalo acá:
+            </p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-brand-800 mb-1">Número visible en la web</label>
+                    <input type="text" id="configDisplayPhone" value="2302 45-7818" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-brand-800 mb-1">Número para enlaces de WhatsApp (con código país)</label>
+                    <input type="text" id="configWaPhone" value="5492302457818" placeholder="Ej: 5492302457818" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-50 border border-brand-200 text-sm">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button onclick="closePhoneConfigModal()" class="px-4 py-2 rounded-xl bg-brand-100 text-brand-800 text-xs font-semibold">Cancelar</button>
+                    <button onclick="savePhoneConfig()" class="px-5 py-2 rounded-xl bg-brand-700 text-white text-xs font-bold">Guardar Número</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL: GENERADOR DE FLYER PARA INSTAGRAM (HISTORIA / FEED)            -->
+    <!-- ===================================================================== -->
+    <div id="igFlyerModal" class="fixed inset-0 z-50 hidden bg-brand-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-brand-200 my-auto">
+            <div class="flex items-center justify-between gap-3 px-5 sm:px-6 py-4 border-b border-brand-100">
+                <div class="min-w-0">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
+                        <i class="ph-bold ph-instagram-logo"></i> Flyer para Instagram (Estilo GP)
+                    </span>
+                    <h3 id="igFlyerPropTitle" class="font-brand text-2xl font-bold text-brand-900 truncate">Propiedad</h3>
+                </div>
+                <button onclick="closeIgFlyerModal()" class="w-10 h-10 rounded-full bg-brand-100 hover:bg-brand-200 text-brand-900 flex items-center justify-center flex-shrink-0">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 sm:p-6">
+                <!-- Preview -->
+                <div class="bg-brand-50 rounded-2xl border border-brand-200 p-3 flex items-center justify-center relative min-h-[320px]">
+                    <canvas id="igFlyerCanvas" class="max-w-full max-h-[62vh] w-auto h-auto rounded-xl shadow-card bg-white"></canvas>
+                    <div id="igFlyerLoading" class="hidden absolute inset-0 bg-brand-50/80 rounded-2xl flex items-center justify-center text-xs font-bold text-brand-700 gap-2">
+                        <i class="ph-bold ph-spinner animate-spin text-lg"></i> Armando el flyer...
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-2">1. Formato</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="igFormatBtn-story" onclick="setIgFlyerFormat('story')" class="py-3 px-3 rounded-xl border-2 text-xs font-bold flex flex-col items-center gap-1 transition-all">
+                                <i class="ph-bold ph-device-mobile text-xl"></i>
+                                <span>Historia</span>
+                                <span class="text-[10px] font-medium opacity-80">1080 × 1920</span>
+                            </button>
+                            <button id="igFormatBtn-feed" onclick="setIgFlyerFormat('feed')" class="py-3 px-3 rounded-xl border-2 text-xs font-bold flex flex-col items-center gap-1 transition-all">
+                                <i class="ph-bold ph-squares-four text-xl"></i>
+                                <span>Publicación (Feed)</span>
+                                <span class="text-[10px] font-medium opacity-80">1080 × 1350</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-brand-800 mb-1">2. Fotos extra (opcional)</label>
+                        <p class="text-[11px] text-brand-600 mb-2">Como en tus flyers: sumá hasta 2 fotos más del interior con un texto corto (ej: "Cocina y baño").</p>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 p-2 rounded-xl bg-brand-50 border border-brand-200">
+                                <label class="w-14 h-14 rounded-lg border-2 border-dashed border-brand-300 hover:border-brand-600 flex items-center justify-center cursor-pointer overflow-hidden flex-shrink-0 bg-white">
+                                    <img id="igExtraThumb0" src="" alt="" class="hidden w-full h-full object-cover">
+                                    <i id="igExtraIcon0" class="ph-duotone ph-camera-plus text-2xl text-brand-600"></i>
+                                    <input type="file" accept="image/*" onchange="handleIgExtraPhoto(event, 0)" class="hidden">
+                                </label>
+                                <input type="text" id="igExtraCaption0" oninput="scheduleIgFlyerRender()" maxlength="40" placeholder="Texto foto 1 (opcional)" class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-white border border-brand-200 text-xs focus:outline-none focus:border-brand-600">
+                                <button onclick="removeIgExtraPhoto(0)" class="text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg flex-shrink-0" title="Quitar foto">
+                                    <i class="ph-bold ph-x text-sm"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 rounded-xl bg-brand-50 border border-brand-200">
+                                <label class="w-14 h-14 rounded-lg border-2 border-dashed border-brand-300 hover:border-brand-600 flex items-center justify-center cursor-pointer overflow-hidden flex-shrink-0 bg-white">
+                                    <img id="igExtraThumb1" src="" alt="" class="hidden w-full h-full object-cover">
+                                    <i id="igExtraIcon1" class="ph-duotone ph-camera-plus text-2xl text-brand-600"></i>
+                                    <input type="file" accept="image/*" onchange="handleIgExtraPhoto(event, 1)" class="hidden">
+                                </label>
+                                <input type="text" id="igExtraCaption1" oninput="scheduleIgFlyerRender()" maxlength="40" placeholder="Texto foto 2 (opcional)" class="flex-1 min-w-0 px-3 py-2 rounded-lg bg-white border border-brand-200 text-xs focus:outline-none focus:border-brand-600">
+                                <button onclick="removeIgExtraPhoto(1)" class="text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg flex-shrink-0" title="Quitar foto">
+                                    <i class="ph-bold ph-x text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-1">
+                        <button onclick="downloadIgFlyer()" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-brand-700 to-brand-600 hover:from-brand-800 hover:to-brand-700 text-white font-bold text-sm shadow-glow flex items-center justify-center gap-2 transition-all">
+                            <i class="ph-bold ph-download-simple text-lg"></i>
+                            <span id="igDownloadBtnText">Descargar imagen</span>
+                        </button>
+                        <button id="igShareBtn" onclick="shareIgFlyer()" class="hidden w-full py-3 px-5 rounded-2xl bg-brand-100 hover:bg-brand-200 text-brand-800 font-bold text-sm flex items-center justify-center gap-2 transition-colors">
+                            <i class="ph-bold ph-share-network text-lg"></i>
+                            <span>Compartir directo a Instagram</span>
+                        </button>
+                        <p class="text-[11px] text-brand-600 leading-relaxed">
+                            💡 El flyer usa la foto principal, el título, la ubicación, el valor, las comodidades y tu WhatsApp de la ficha.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toastNotification" class="fixed bottom-24 right-5 z-50 hidden bg-brand-900 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-brand-600 flex items-center gap-3 max-w-sm">
+        <i class="ph-fill ph-check-circle text-emerald-400 text-2xl flex-shrink-0"></i>
+        <p id="toastMessage" class="text-xs sm:text-sm font-medium"></p>
+    </div>
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <button onclick="openDirectWhatsApp('¡Hola Gina! Me contacto desde tu web para hacerte una consulta inmobiliaria.')" class="fixed bottom-5 right-5 z-40 group flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white pl-4 pr-5 py-3 rounded-full shadow-xl transition-all hover:scale-105">
+        <i class="ph-fill ph-whatsapp-logo text-2xl"></i>
+        <div class="text-left">
+            <span class="block text-[10px] uppercase tracking-wider font-semibold text-emerald-100 leading-none">Atención Directa</span>
+            <span class="block text-xs sm:text-sm font-bold leading-tight">WhatsApp Gina Pepa</span>
+        </div>
+    </button>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-900 text-brand-100 border-t border-brand-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pb-8 border-b border-brand-800">
+                <div class="md:col-span-5 space-y-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-brand font-bold text-xl border border-brand-500">
+                            GP
+                        </div>
+                        <div>
+                            <span class="font-brand text-2xl font-bold text-white tracking-wide block leading-none">GINA PEPA</span>
+                            <span class="text-[10px] tracking-[0.25em] uppercase text-brand-300">Inmobiliaria</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-brand-300 max-w-sm pt-1">
+                        🏠 Servicio inmobiliario personalizado • 🔑 Seguridad para tu inversión • 🔍 Te ayudo a encontrar tu hogar ideal.
+                    </p>
+                </div>
+
+                <div class="md:col-span-4 flex flex-wrap gap-2">
+                    <button onclick="switchWindow('inicio')" class="text-xs font-semibold bg-brand-800 hover:bg-brand-700 text-white px-3.5 py-2 rounded-xl transition-colors">
+                        1. Catálogo y Buscador
+                    </button>
+                    <button onclick="switchWindow('contacto')" class="text-xs font-semibold bg-brand-800 hover:bg-brand-700 text-white px-3.5 py-2 rounded-xl transition-colors">
+                        2. Contacto Nuevos Clientes
+                    </button>
+                    <button onclick="switchWindow('subir')" class="text-xs font-semibold bg-brand-800 hover:bg-brand-700 text-white px-3.5 py-2 rounded-xl transition-colors">
+                        3. Subir Propiedad
+                    </button>
+                </div>
+
+                <div class="md:col-span-3 md:text-right">
+                    <p class="text-xs text-brand-300">Contacto Nuevos Clientes:</p>
+                    <p id="footerPhoneDisplay" class="font-brand text-2xl font-bold text-white">02302 45-7818</p>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-400 gap-2">
+                <p>© 2026 Gina Pepa Inmobiliaria. Todos los derechos reservados.</p>
+                <p>Diseñado con la identidad visual de GP Inmobiliaria.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================================
+        // CONFIGURACIÓN DE TELÉFONO / WHATSAPP DE GINA PEPA
+        // ============================================================================
+        let ginaPhoneConfig = {
+            display: '02302 45-7818',
+            whatsapp: '5492302457818'
+        };
+
+        // ============================================================================
+        // BASE DE DATOS INICIAL DE PROPIEDADES (Las de tus imágenes + Alquileres)
+        // ============================================================================
+        const defaultProperties = [
+            {
+                id: 1,
+                code: 'GP-101',
+                title: 'Casa Completa con 2 Locales Comerciales',
+                operation: 'Venta',
+                category: 'Casa + Local',
+                price: 'Consultar valor',
+                location: 'Zona Comercial de Gran Visibilidad',
+                beds: 3,
+                baths: 2,
+                badge: 'Excelente Ubicación y Precio',
+                image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80',
+                description: '¡Excelente oportunidad de inversión! Casa completa de 3 habitaciones y 2 baños, living comedor, cocina, garage semicubierto y patio con parrilla. Incluye además 2 locales comerciales al frente con baño propio, ideales para comercio, consultorio o renta asegurada.',
+                amenities: ['3 habitaciones', '2 baños', 'Living comedor', 'Garage semicubierto', 'Patio con parrilla', '2 Locales con baño', 'Gran visibilidad'],
+                tags: ['jardin', 'comercial', 'garage', 'oportunidad']
+            },
+            {
+                id: 2,
+                code: 'GP-102',
+                title: 'Hermosa Casa Quinta Arbolada con Pileta',
+                operation: 'Venta',
+                category: 'Quinta',
+                price: 'Consultar valor',
+                location: 'Zona Residencial de Quintas',
+                beds: 3,
+                baths: 2,
+                badge: 'Terreno Arbolado y Pileta',
+                image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=900&q=80',
+                description: 'Espectacular Casa Quinta a la venta rodeada de naturaleza y añosos árboles. Cuenta con cálido living comedor con estufa a leña, cocina comedor, lavadero independiente, garaje tradicional más garaje de usos múltiples, gran parque verde y hermosa pileta de natación.',
+                amenities: ['Living con estufa a leña', 'Cocina comedor', 'Lavadero', 'Garaje usos múltiples', 'Terreno arbolado', 'Pileta', 'Galería exterior'],
+                tags: ['jardin', 'pileta', 'garage']
+            },
+            {
+                id: 3,
+                code: 'GP-103',
+                title: 'Vivienda Muy Completa con Hermoso Jardín',
+                operation: 'Venta',
+                category: 'Casa',
+                price: 'Consultar valor',
+                location: 'Barrio Residencial Tranquilo',
+                beds: 3,
+                baths: 2,
+                badge: 'Con Potencial de Ampliación',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
+                description: 'Vivienda a la venta muy completa y lista para disfrutar en familia. Dispone de 3 dormitorios luminosos, amplio living comedor con hogar/estufa a leña en ladrillo visto, cocina con comedor diario y un hermoso jardín parquizado con gran potencial de ampliación.',
+                amenities: ['3 Dormitorios', 'Living comedor', 'Cocina comedor diario', 'Estufa a leña', 'Hermoso jardín', 'Potencial de ampliación'],
+                tags: ['jardin', 'garage', 'oportunidad']
+            },
+            {
+                id: 4,
+                code: 'GP-104',
+                title: 'Casa en Avenida Principal con Garage / Local',
+                operation: 'Venta',
+                category: 'Casa + Local',
+                price: 'Consultar valor',
+                location: 'Sobre Avenida Principal',
+                beds: 2,
+                baths: 2,
+                badge: 'Propiedad con Mucho Potencial',
+                image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80',
+                description: 'Casa en venta ubicada estratégicamente sobre Avenida Principal. Cuenta con casa completa de 2 dormitorios, lavadero, patio grande arbolado y un amplio garage con cocina y baño propios que brinda posibilidades inmediatas de departamento independiente o local comercial.',
+                amenities: ['2 Dormitorios', 'Con lavadero', 'Garage con cocina y baño', 'Apto Depto o Local', 'Patio grande', 'Sobre Avenida'],
+                tags: ['jardin', 'comercial', 'garage', 'oportunidad']
+            },
+            {
+                id: 5,
+                code: 'GP-105',
+                title: 'Casa Moderna con Patio y Parrilla',
+                operation: 'Alquiler',
+                category: 'Casa',
+                price: '$ 420.000 / mes',
+                location: 'A 4 cuadras del Centro',
+                beds: 2,
+                baths: 1,
+                badge: 'Ingreso Inmediato',
+                image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80',
+                description: 'Excelente propiedad en alquiler anual. Cuenta con 2 dormitorios con placard, baño completo renovado, luminoso estar comedor integrado a la cocina, entrada para auto techada y patio verde con parrilla. Todos los servicios conectados.',
+                amenities: ['2 Dormitorios', 'Living cocina integrada', 'Garage techado', 'Patio con parrilla', 'Todos los servicios'],
+                tags: ['jardin', 'garage']
+            },
+            {
+                id: 6,
+                code: 'GP-106',
+                title: 'Departamento Céntrico Luminoso con Balcón',
+                operation: 'Alquiler',
+                category: 'Departamento',
+                price: '$ 290.000 / mes',
+                location: 'Pleno Centro Comercial',
+                beds: 1,
+                baths: 1,
+                badge: 'Bajas Expensas',
+                image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80',
+                description: 'Cómodo departamento en alquiler ideal para profesional o pareja. Ubicado en zona céntrica privilegiada, cuenta con estar comedor amplio, cocina equipada con ventilación natural, 1 dormitorio con placard empotrado y balcón a la calle.',
+                amenities: ['1 Dormitorio con placard', 'Balcón al frente', 'Cocina separada', 'Muy luminoso', 'Zona céntrica'],
+                tags: ['oportunidad']
+            },
+            {
+                id: 7,
+                code: 'GP-107',
+                title: 'Propiedad Comercial con Jardín Interior',
+                operation: 'Venta',
+                category: 'Casa + Local',
+                price: 'Consultar valor',
+                location: 'Calle de Alto Tránsito',
+                beds: 2,
+                baths: 1,
+                badge: 'Gran Oportunidad',
+                image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80',
+                description: 'Excelente oportunidad en ubicación comercial estratégica. Ideal para quienes buscan combinar vivienda o estudio profesional con amplio jardín interior y gran proyección de valorización.',
+                amenities: ['Gran oportunidad', 'Jardín amplio', 'Ubicación comercial', 'Frente con vidriera'],
+                tags: ['jardin', 'comercial', 'oportunidad']
+            },
+            {
+                id: 8,
+                code: 'GP-108',
+                title: 'Local Comercial Amplio sobre Avenida',
+                operation: 'Alquiler',
+                category: 'Local Comercial',
+                price: '$ 350.000 / mes',
+                location: 'Avenida Principal',
+                beds: 0,
+                baths: 1,
+                badge: 'Excelente Visibilidad',
+                image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80',
+                description: 'Local comercial en alquiler con doble vidriera sobre avenida principal. Salón de ventas sin columnas, baño privado y espacio de guardado/kitchenette. Ideal para showroom, estudio, consultorios o comercio minorista.',
+                amenities: ['Vidriera doble', 'Baño privado', 'Kitchenette', 'Zona comercial'],
+                tags: ['comercial', 'oportunidad']
+            }
+        ];
+
+        // State management
+        let properties = [];
+        let activeOperationFilter = 'todos';
+        let activeQuickTags = new Set();
+        let uploadedImageDataUrl = '';
+
+        // Load properties from localStorage or initialize defaults
+        function loadInitialData() {
+            try {
+                const savedProps = localStorage.getItem('gina_pepa_properties_v1');
+                if (savedProps) {
+                    properties = JSON.parse(savedProps);
+                } else {
+                    properties = [...defaultProperties];
+                }
+
+                const savedPhone = localStorage.getItem('gina_pepa_phone_v1');
+                if (savedPhone) {
+                    ginaPhoneConfig = JSON.parse(savedPhone);
+                    updatePhoneDisplays();
+                }
+            } catch (e) {
+                properties = [...defaultProperties];
+            }
+            renderProperties();
+            renderAdminList();
+            updateLivePreview();
+        }
+
+        function savePropertiesToStorage() {
+            try {
+                localStorage.setItem('gina_pepa_properties_v1', JSON.stringify(properties));
+            } catch (e) {
+                console.warn('No se pudo guardar en almacenamiento local:', e);
+            }
+        }
+
+        // ============================================================================
+        // NAVEGACIÓN ENTRE LAS 3 VENTANAS PRINCIPALES
+        // ============================================================================
+        function switchWindow(windowName) {
+            const windows = ['inicio', 'contacto', 'subir'];
+            windows.forEach(w => {
+                const sectionEl = document.getElementById(`window-${w}`);
+                const tabBtn = document.getElementById(`tabBtn-${w}`);
+                if (w === windowName) {
+                    sectionEl.classList.remove('hidden');
+                    tabBtn.classList.remove('window-tab-inactive');
+                    tabBtn.classList.add('window-tab-active');
+                } else {
+                    sectionEl.classList.add('hidden');
+                    tabBtn.classList.remove('window-tab-active');
+                    tabBtn.classList.add('window-tab-inactive');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================================================
+        // BUSCADOR ÁGIL Y FILTROS COMBINADOS
+        // ============================================================================
+        function setOperationFilter(op) {
+            activeOperationFilter = op;
+            ['todos', 'Venta', 'Alquiler'].forEach(btnOp => {
+                const btn = document.getElementById(`opBtn-${btnOp}`);
+                if (btnOp === op) {
+                    btn.className = 'op-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-brand-700 text-white shadow-sm';
+                } else {
+                    btn.className = 'op-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-brand-800 hover:bg-brand-200/60';
+                }
+            });
+            renderProperties();
+        }
+
+        function toggleQuickTag(tag) {
+            const btn = document.getElementById(`tag-${tag}`);
+            if (activeQuickTags.has(tag)) {
+                activeQuickTags.delete(tag);
+                btn.className = 'quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all';
+            } else {
+                activeQuickTags.add(tag);
+                btn.className = 'quick-tag-btn flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-full border border-brand-700 bg-brand-700 text-white shadow-sm transition-all';
+            }
+            renderProperties();
+        }
+
+        function clearSearchInput() {
+            document.getElementById('agileSearchInput').value = '';
+            renderProperties();
+        }
+
+        function resetAllFilters() {
+            document.getElementById('agileSearchInput').value = '';
+            document.getElementById('typeFilterSelect').value = 'todos';
+            document.getElementById('roomsFilterSelect').value = '0';
+            activeQuickTags.clear();
+            document.querySelectorAll('.quick-tag-btn').forEach(btn => {
+                btn.className = 'quick-tag-btn flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full border border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500 transition-all';
+            });
+            setOperationFilter('todos');
+        }
+
+        function updateOperationCounters() {
+            const total = properties.length;
+            const ventaCount = properties.filter(p => p.operation === 'Venta').length;
+            const alquilerCount = properties.filter(p => p.operation === 'Alquiler').length;
+
+            document.getElementById('count-todos').textContent = total;
+            document.getElementById('count-venta').textContent = ventaCount;
+            document.getElementById('count-alquiler').textContent = alquilerCount;
+            document.getElementById('adminTotalCount').textContent = total;
+        }
+
+        function renderProperties() {
+            updateOperationCounters();
+
+            const searchRaw = (document.getElementById('agileSearchInput').value || '').trim().toLowerCase();
+            const selectedType = document.getElementById('typeFilterSelect').value;
+            const minRooms = parseInt(document.getElementById('roomsFilterSelect').value, 10) || 0;
+
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchRaw.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            const filtered = properties.filter(prop => {
+                // Operation match
+                if (activeOperationFilter !== 'todos' && prop.operation !== activeOperationFilter) {
+                    return false;
+                }
+                // Category match
+                if (selectedType !== 'todos' && prop.category !== selectedType) {
+                    return false;
+                }
+                // Minimum bedrooms match
+                if (minRooms > 0 && (prop.beds || 0) < minRooms) {
+                    return false;
+                }
+                // Quick tags match
+                for (let tag of activeQuickTags) {
+                    const propTags = prop.tags || [];
+                    const textBlob = `${prop.title} ${prop.description} ${(prop.amenities || []).join(' ')}`.toLowerCase();
+                    if (!propTags.includes(tag) && !textBlob.includes(tag)) {
+                        return false;
+                    }
+                }
+                // Agile keyword search
+                if (searchRaw.length > 0) {
+                    const haystack = `${prop.code} ${prop.title} ${prop.operation} ${prop.category} ${prop.location} ${prop.badge} ${prop.description} ${(prop.amenities || []).join(' ')}`.toLowerCase();
+                    const terms = searchRaw.split(/\s+/);
+                    return terms.every(term => haystack.includes(term));
+                }
+                return true;
+            });
+
+            const grid = document.getElementById('propertiesGrid');
+            const emptyState = document.getElementById('emptySearchState');
+            const statusText = document.getElementById('resultsStatusText');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                statusText.textContent = 'No se encontraron propiedades con esos criterios';
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            statusText.innerHTML = `Mostrando <strong>${filtered.length}</strong> ${filtered.length === 1 ? 'propiedad disponible' : 'propiedades disponibles'}`;
+
+            grid.innerHTML = filtered.map(prop => {
+                const isVenta = prop.operation === 'Venta';
+                const ribbonBg = isVenta ? 'bg-brand-700' : 'bg-brand-accent';
+                const ribbonLabel = isVenta ? 'SE VENDE' : 'ALQUILER';
+
+                const topAmenities = (prop.amenities || []).slice(0, 4).map(am => `
+                    <span class="inline-flex items-center gap-1 text-[11px] font-medium bg-brand-50 text-brand-800 px-2.5 py-1 rounded-lg border border-brand-200/80">
+                        <i class="ph-bold ph-check text-brand-600"></i> ${escapeHtml(am)}
+                    </span>
+                `).join('');
+
+                return `
+                    <article class="bg-white rounded-3xl overflow-hidden border border-brand-200/90 shadow-card hover:shadow-glow transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <!-- Image Container with Gina Pepa Flyer Ribbons -->
+                            <div class="relative h-56 overflow-hidden bg-brand-100 cursor-pointer" onclick="openPropertyModal(${prop.id})">
+                                <img 
+                                    src="${escapeHtml(prop.image)}" 
+                                    alt="${escapeHtml(prop.title)}" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    onerror="this.src='https://placehold.co/800x500/7C3262/FFFFFF?text=Gina+Pepa+Inmobiliaria'"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-900/70 via-transparent to-black/15"></div>
+
+                                <!-- Left Operation Ribbon matching her "VENDO" pill -->
+                                <div class="absolute top-3.5 left-0 ${ribbonBg} text-white font-brand font-bold text-base tracking-wider px-4 py-1 rounded-r-full shadow-md">
+                                    ${ribbonLabel}
+                                </div>
+
+                                <!-- Code Pill -->
+                                <span class="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-sm text-brand-900 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                                    Ficha ${escapeHtml(prop.code)}
+                                </span>
+
+                                <!-- Bottom Highlight & Price over Image -->
+                                <div class="absolute bottom-3 inset-x-3.5 flex items-end justify-between gap-2 text-white">
+                                    <span class="text-[11px] font-semibold bg-brand-800/90 backdrop-blur-sm px-2.5 py-1 rounded-lg border border-white/15">
+                                        ✨ ${escapeHtml(prop.badge || 'Destacada')}
+                                    </span>
+                                    <span class="font-brand font-bold text-xl bg-white text-brand-900 px-3 py-0.5 rounded-xl shadow">
+                                        ${escapeHtml(prop.price)}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Card Body -->
+                            <div class="p-5">
+                                <div class="flex items-center justify-between text-xs font-semibold text-brand-600 mb-1">
+                                    <span class="uppercase tracking-wider">${escapeHtml(prop.category)}</span>
+                                    <span class="flex items-center gap-2 text-brand-800">
+                                        ${prop.beds > 0 ? `<span>🛏️ ${prop.beds} Dorm.</span>` : ''}
+                                        <span>🚿 ${prop.baths} ${prop.baths === 1 ? 'Baño' : 'Baños'}</span>
+                                    </span>
+                                </div>
+
+                                <h3 onclick="openPropertyModal(${prop.id})" class="font-brand text-2xl font-bold text-brand-900 group-hover:text-brand-600 transition-colors leading-snug cursor-pointer">
+                                    ${escapeHtml(prop.title)}
+                                </h3>
+
+                                <p class="text-xs text-brand-600 flex items-center gap-1 mt-1 mb-3">
+                                    <i class="ph-fill ph-map-pin text-brand-500"></i> ${escapeHtml(prop.location)}
+                                </p>
+
+                                <p class="text-xs text-brand-800/80 line-clamp-2 mb-3.5 leading-relaxed">
+                                    ${escapeHtml(prop.description)}
+                                </p>
+
+                                <!-- Amenities Pills -->
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${topAmenities}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Actions: Ficha Modal + Direct WhatsApp with Sheet -->
+                        <div class="px-5 pb-5 pt-3 border-t border-brand-100 grid grid-cols-2 gap-2.5">
+                            <button onclick="openPropertyModal(${prop.id})" class="py-2.5 px-3 rounded-xl bg-brand-100 hover:bg-brand-200 text-brand-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                                <i class="ph-bold ph-file-text text-sm"></i>
+                                <span>Ver Ficha</span>
+                            </button>
+                            <button onclick="sendPropertySheetWhatsApp(${prop.id})" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors">
+                                <i class="ph-fill ph-whatsapp-logo text-base"></i>
+                                <span>WhatsApp Ficha</span>
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // ============================================================================
+        // MODAL DE FICHA COMPLETA Y ENVÍO DE FICHA POR WHATSAPP
+        // ============================================================================
+        function openPropertyModal(propId) {
+            const prop = properties.find(p => p.id === propId);
+            if (!prop) return;
+
+            document.getElementById('modalPropImg').src = prop.image;
+            document.getElementById('modalPropOpBadge').textContent = prop.operation === 'Venta' ? 'SE VENDE' : 'EN ALQUILER';
+            document.getElementById('modalPropOpBadge').className = `${prop.operation === 'Venta' ? 'bg-brand-700' : 'bg-brand-accent'} text-white font-brand font-bold text-lg px-4 py-1 rounded-full shadow-md uppercase tracking-wider`;
+            document.getElementById('modalPropCode').textContent = `FICHA #${prop.code}`;
+            document.getElementById('modalPropHighlight').textContent = prop.badge || 'Oportunidad';
+            document.getElementById('modalPropTitle').textContent = prop.title;
+            document.getElementById('modalPropLocation').innerHTML = `<i class="ph-fill ph-map-pin"></i> ${escapeHtml(prop.location)}`;
+            document.getElementById('modalPropPrice').textContent = prop.price;
+            document.getElementById('modalPropType').textContent = prop.category;
+            document.getElementById('modalPropBeds').textContent = prop.beds > 0 ? `${prop.beds} Dormitorios` : 'Ambiente Comercial';
+            document.getElementById('modalPropBaths').textContent = `${prop.baths} ${prop.baths === 1 ? 'Baño' : 'Baños'}`;
+            document.getElementById('modalPropDesc').textContent = prop.description;
+
+            const amenitiesContainer = document.getElementById('modalPropAmenities');
+            amenitiesContainer.innerHTML = (prop.amenities || []).map(item => `
+                <div class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 text-xs font-semibold text-brand-900">
+                    <span class="w-6 h-6 rounded-lg bg-brand-700 text-white flex items-center justify-center text-xs flex-shrink-0">✓</span>
+                    <span>${escapeHtml(item)}</span>
+                </div>
+            `).join('');
+
+            const waBtn = document.getElementById('modalWhatsappBtn');
+            waBtn.onclick = () => sendPropertySheetWhatsApp(prop.id);
+
+            document.getElementById('propertySheetModal').classList.remove('hidden');
+        }
+
+        function closePropertyModal() {
+            document.getElementById('propertySheetModal').classList.add('hidden');
+        }
+
+        function sendPropertySheetWhatsApp(propId) {
+            const prop = properties.find(p => p.id === propId);
+            if (!prop) return;
+
+            const message = [
+                `¡Hola Gina! 👋 Te escribo desde tu página web *Gina Pepa Inmobiliaria*.`,
+                ``,
+                `Me interesa consultar / agendar una cita por esta ficha:`,
+                `🏠 *${prop.title}*`,
+                `📋 *Código de Ficha:* ${prop.code}`,
+                `🔑 *Operación:* ${prop.operation}`,
+                `📍 *Ubicación:* ${prop.location}`,
+                `💎 *Valor:* ${prop.price}`,
+                ``,
+                `¿En qué horario podríamos coordinar una visita o llamada? ¡Muchas gracias!`
+            ].join('\n');
+
+            const url = `https://wa.me/${ginaPhoneConfig.whatsapp}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function openDirectWhatsApp(customText) {
+            const url = `https://wa.me/${ginaPhoneConfig.whatsapp}?text=${encodeURIComponent(customText)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        // ============================================================================
+        // FORMULARIO DE CONTACTO / NUEVOS CLIENTES -> WHATSAPP
+        // ============================================================================
+        function handleContactFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const reason = document.getElementById('clientReason').value;
+            const schedule = document.getElementById('clientSchedule').value;
+            const details = document.getElementById('clientMessage').value.trim();
+
+            const msg = [
+                `¡Hola Gina! 👋 Te contacto desde la sección de *Citas y Nuevos Clientes* de tu web.`,
+                ``,
+                `👤 *Nombre:* ${name}`,
+                `📱 *Mi Teléfono:* ${phone}`,
+                `📌 *Motivo:* ${reason}`,
+                `🕒 *Horario preferido:* ${schedule}`,
+                details ? `💬 *Consulta:* ${details}` : ``
+            ].filter(Boolean).join('\n');
+
+            showToast('Abriendo WhatsApp con tu solicitud de cita...');
+            openDirectWhatsApp(msg);
+        }
+
+        // ============================================================================
+        // PANEL DE GINA: SUBIR PROPIEDAD Y VISTA PREVIA EN VIVO
+        // ============================================================================
+        function handleImageFileSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImageDataUrl = e.target.result;
+                document.getElementById('newPropImageUrl').value = '';
+                updateLivePreview();
+                showToast('Fotografía cargada en la vista previa');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setSamplePhoto(url) {
+            uploadedImageDataUrl = '';
+            document.getElementById('newPropImageUrl').value = url;
+            updateLivePreview();
+        }
+
+        function getSelectedAmenitiesFromForm() {
+            const checkboxes = document.querySelectorAll('input[name="propAmenity"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function updateLivePreview() {
+            const title = document.getElementById('newPropTitle').value.trim() || 'Casa Amplia con Jardín';
+            const op = document.getElementById('newPropOperation').value;
+            const category = document.getElementById('newPropCategory').value;
+            const price = document.getElementById('newPropPrice').value.trim() || 'Consultar valor';
+            const location = document.getElementById('newPropLocation').value.trim() || 'Av. Principal / Zona Centro';
+            const badge = document.getElementById('newPropBadge').value;
+            const beds = parseInt(document.getElementById('newPropBeds').value, 10) || 0;
+            const urlInput = document.getElementById('newPropImageUrl').value.trim();
+
+            const photoSrc = uploadedImageDataUrl || urlInput || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+
+            document.getElementById('previewImg').src = photoSrc;
+            const ribbon = document.getElementById('previewOpRibbon');
+            ribbon.textContent = op === 'Venta' ? 'SE VENDE' : 'ALQUILER';
+            ribbon.className = `absolute top-3 left-0 ${op === 'Venta' ? 'bg-brand-700' : 'bg-brand-accent'} text-white font-brand font-bold text-lg tracking-wider px-5 py-1 rounded-r-full shadow-md uppercase`;
+
+            document.getElementById('previewBadge').textContent = `✨ ${badge}`;
+            document.getElementById('previewCategory').textContent = category;
+            document.getElementById('previewPrice').textContent = price;
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewLocation').innerHTML = `<i class="ph-fill ph-map-pin"></i> ${escapeHtml(location)}`;
+
+            const amenities = getSelectedAmenitiesFromForm();
+            const previewList = [];
+            if (beds > 0) previewList.push(`${beds} Dormitorios`);
+            previewList.push(...amenities.slice(0, 4));
+
+            document.getElementById('previewAmenities').innerHTML = previewList.map(a => `
+                <span class="text-[11px] font-semibold bg-brand-50 text-brand-800 px-2.5 py-1 rounded-lg border border-brand-200">
+                    ✓ ${escapeHtml(a)}
+                </span>
+            `).join('');
+        }
+
+        function handleNewPropertySubmit(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('newPropTitle').value.trim();
+            const operation = document.getElementById('newPropOperation').value;
+            const category = document.getElementById('newPropCategory').value;
+            const price = document.getElementById('newPropPrice').value.trim() || 'Consultar valor';
+            const location = document.getElementById('newPropLocation').value.trim();
+            const beds = parseInt(document.getElementById('newPropBeds').value, 10) || 0;
+            const baths = parseInt(document.getElementById('newPropBaths').value, 10) || 1;
+            const badge = document.getElementById('newPropBadge').value;
+            const description = document.getElementById('newPropDescription').value.trim();
+            const urlInput = document.getElementById('newPropImageUrl').value.trim();
+
+            const image = uploadedImageDataUrl || urlInput || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80';
+            const checkedAmenities = getSelectedAmenitiesFromForm();
+            const amenities = [];
+            if (beds > 0) amenities.push(`${beds} ${beds === 1 ? 'Dormitorio' : 'Dormitorios'}`);
+            amenities.push(`${baths} ${baths === 1 ? 'Baño' : 'Baños'}`);
+            amenities.push(...checkedAmenities);
+
+            // Auto-detect quick filter tags
+            const tags = [];
+            const fullText = `${title} ${category} ${badge} ${amenities.join(' ')}`.toLowerCase();
+            if (fullText.includes('jardín') || fullText.includes('patio') || fullText.includes('quinta')) tags.push('jardin');
+            if (fullText.includes('local') || fullText.includes('comercial')) tags.push('comercial');
+            if (fullText.includes('pileta')) tags.push('pileta');
+            if (fullText.includes('garage') || fullText.includes('cochera')) tags.push('garage');
+            if (fullText.includes('oportunidad') || fullText.includes('precio')) tags.push('oportunidad');
+
+            const newId = Date.now();
+            const nextNumber = 101 + properties.length;
+            const newProp = {
+                id: newId,
+                code: `GP-${nextNumber}`,
+                title,
+                operation,
+                category,
+                price,
+                location,
+                beds,
+                baths,
+                badge,
+                image,
+                description,
+                amenities,
+                tags
+            };
+
+            // Add at the beginning so Gina sees her newly uploaded property right away
+            properties.unshift(newProp);
+            savePropertiesToStorage();
+            renderProperties();
+            renderAdminList();
+
+            // Reset form
+            document.getElementById('uploadPropertyForm').reset();
+            uploadedImageDataUrl = '';
+            updateLivePreview();
+
+            showToast(`¡Propiedad "${title}" publicada con éxito en el catálogo!`);
+            switchWindow('inicio');
+
+            setTimeout(() => {
+                const catalogEl = document.getElementById('buscador-agil');
+                if (catalogEl) catalogEl.scrollIntoView({ behavior: 'smooth' });
+            }, 250);
+        }
+
+        function renderAdminList() {
+            const container = document.getElementById('adminPropertiesList');
+            container.innerHTML = properties.map(p => `
+                <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-brand-50 border border-brand-200 text-xs">
+                    <div class="flex items-center gap-2.5 truncate">
+                        <img src="${escapeHtml(p.image)}" alt="" class="w-10 h-10 rounded-lg object-cover flex-shrink-0" onerror="this.src='https://placehold.co/100x100/7C3262/FFFFFF?text=GP'">
+                        <div class="truncate">
+                            <span class="font-bold text-brand-900 block truncate">${escapeHtml(p.title)}</span>
+                            <span class="text-[11px] text-brand-600">${escapeHtml(p.operation)} • ${escapeHtml(p.code)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                        <button onclick="openPropertyModal(${p.id})" class="inline-flex items-center gap-1 bg-brand-100 hover:bg-brand-200 text-brand-800 font-bold text-[11px] px-2.5 py-1.5 rounded-lg" title="Ver ficha completa">
+                            <i class="ph-bold ph-file-text text-sm"></i> Ver Ficha
+                        </button>
+                        <button onclick="openIgFlyerModal(${p.id})" class="inline-flex items-center gap-1 bg-brand-700 hover:bg-brand-800 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-lg shadow-sm" title="Descargar flyer para Instagram">
+                            <i class="ph-bold ph-instagram-logo text-sm"></i> Flyer IG
+                        </button>
+                        <button onclick="deleteProperty(${p.id})" class="text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg" title="Eliminar propiedad">
+                            <i class="ph-bold ph-trash text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteProperty(propId) {
+            properties = properties.filter(p => p.id !== propId);
+            savePropertiesToStorage();
+            renderProperties();
+            renderAdminList();
+            showToast('Propiedad eliminada del catálogo');
+        }
+
+        function restoreDefaultProperties() {
+            properties = [...defaultProperties];
+            savePropertiesToStorage();
+            renderProperties();
+            renderAdminList();
+            showToast('Se restauraron las propiedades originales');
+        }
+
+        // ============================================================================
+        // FLYER PARA INSTAGRAM (HISTORIA 1080x1920 / FEED 1080x1350) ESTILO GP
+        // ============================================================================
+        const IG_FORMATS = {
+            story: { w: 1080, h: 1920, label: 'historia' },
+            feed: { w: 1080, h: 1350, label: 'feed' }
+        };
+        const IG_COLORS = { plum: '#7C3262', deep: '#64234E', dark: '#3D1430', soft: '#FBF4F8', line: '#DCB6CD' };
+
+        // Íconos de línea (grilla 24x24) para dibujar en el flyer, como los de los flyers de Gina
+        const IG_ICON_PATHS = {
+            house: 'M3 11 L12 3.5 L21 11 M5.5 9 V20.5 H18.5 V9 M10 20.5 V14.5 H14 V20.5',
+            bed: 'M2.5 6 V19 M2.5 15.5 H21.5 V19 M21.5 15.5 V12.5 A2.5 2.5 0 0 0 19 10 H10 V15.5 M4.4 12.5 A1.8 1.8 0 1 0 8 12.5 A1.8 1.8 0 1 0 4.4 12.5',
+            bath: 'M3 12 H21 V14.5 A4.5 4.5 0 0 1 16.5 19 H7.5 A4.5 4.5 0 0 1 3 14.5 Z M5.5 12 V5.5 A2 2 0 0 1 9.5 5.5 M7.5 19 L6.5 21 M16.5 19 L17.5 21',
+            car: 'M3 16.5 V12 L5.5 7 H18.5 L21 12 V16.5 Z M3 12 H21 M5.5 16.5 V19 M18.5 16.5 V19 M6 14.25 H8 M16 14.25 H18',
+            tree: 'M12 21.5 V13 M12 13 C6.5 13 5 9.5 7 7 C7 4 9.5 2.5 12 3 C14.5 2.5 17 4 17 7 C19 9.5 17.5 13 12 13 Z M8.5 21.5 H15.5 M12 16.5 L14.5 14.5',
+            flame: 'M12 3 C15 6.5 18.5 9.5 18.5 14.5 A6.5 6.5 0 0 1 5.5 14.5 C5.5 11 7.5 9 9 7 C9.5 9.5 10.5 10.5 12 11 C12.5 8.5 11.5 5.5 12 3 Z',
+            pool: 'M2 17.5 Q4.5 15.5 7 17.5 T12 17.5 T17 17.5 T22 17.5 M2 21 Q4.5 19 7 21 T12 21 T17 21 T22 21 M8 15 V5 A2 2 0 0 1 12 5 M15 15 V5 A2 2 0 0 1 19 5 M8 8.5 H15 M8 12 H15',
+            store: 'M3 9 L4.5 4 H19.5 L21 9 Z M3 9 A3 3 0 0 0 9 9 A3 3 0 0 0 15 9 A3 3 0 0 0 21 9 M4.5 11.5 V20.5 H19.5 V11.5 M10 20.5 V15 H14 V20.5',
+            washer: 'M4.5 3 H19.5 V21 H4.5 Z M4.5 7 H19.5 M7.5 14 A4.5 4.5 0 1 0 16.5 14 A4.5 4.5 0 1 0 7.5 14 M7.5 5 H7.6 M10.5 5 H10.6',
+            sofa: 'M4.5 11 V8 A2 2 0 0 1 6.5 6 H17.5 A2 2 0 0 1 19.5 8 V11 M2.5 13 A2 2 0 0 1 6.5 13 V15 H17.5 V13 A2 2 0 0 1 21.5 13 V18 H2.5 Z M5 18 V20 M19 18 V20',
+            pot: 'M4 10 H20 V16.5 A3.5 3.5 0 0 1 16.5 20 H7.5 A3.5 3.5 0 0 1 4 16.5 Z M2 10 H22 M9.5 7 H14.5 M12 7 V5',
+            pin: 'M12 21.5 C12 21.5 19 15 19 9.5 A7 7 0 0 0 5 9.5 C5 15 12 21.5 12 21.5 Z M9.5 9.5 A2.5 2.5 0 1 0 14.5 9.5 A2.5 2.5 0 1 0 9.5 9.5',
+            phone: 'M5 3.5 H9 L11 8.5 L8.5 10 A11 11 0 0 0 14 15.5 L15.5 13 L20.5 15 V19 A2 2 0 0 1 18.5 21 A16.5 16.5 0 0 1 3 5.5 A2 2 0 0 1 5 3.5 Z',
+            sparkle: 'M12 3 L14 10 L21 12 L14 14 L12 21 L10 14 L3 12 L10 10 Z',
+            check: 'M5 12.5 L10 17.5 L19 7'
+        };
+
+        let igFlyerState = { propId: null, format: 'story', renderToken: 0, renderPromise: null, blob: null, warnedPhoto: false };
+        const igExtrasByProp = {}; // Fotos extra por propiedad (solo durante la sesión)
+        const igImageCache = new Map();
+        let igRenderTimer = null;
+
+        function openIgFlyerModal(propId) {
+            const prop = properties.find(p => p.id === propId);
+            if (!prop) return;
+            igFlyerState.propId = propId;
+            igFlyerState.warnedPhoto = false;
+            if (!igExtrasByProp[propId]) igExtrasByProp[propId] = { photos: [null, null], captions: ['', ''] };
+            const extras = igExtrasByProp[propId];
+            [0, 1].forEach(i => {
+                document.getElementById(`igExtraCaption${i}`).value = extras.captions[i];
+                updateIgExtraThumb(i);
+            });
+            document.getElementById('igFlyerPropTitle').textContent = prop.title;
+            document.getElementById('igShareBtn').classList.toggle('hidden', !canShareIgFiles());
+            document.getElementById('igFlyerModal').classList.remove('hidden');
+            setIgFlyerFormat(igFlyerState.format);
+        }
+
+        function closeIgFlyerModal() {
+            document.getElementById('igFlyerModal').classList.add('hidden');
+        }
+
+        function setIgFlyerFormat(format) {
+            igFlyerState.format = format;
+            Object.keys(IG_FORMATS).forEach(f => {
+                const btn = document.getElementById(`igFormatBtn-${f}`);
+                const stateClasses = f === format
+                    ? 'border-brand-700 bg-brand-700 text-white shadow-sm'
+                    : 'border-brand-200 bg-brand-50 text-brand-800 hover:border-brand-500';
+                btn.className = `py-3 px-3 rounded-xl border-2 text-xs font-bold flex flex-col items-center gap-1 transition-all ${stateClasses}`;
+            });
+            document.getElementById('igDownloadBtnText').textContent = format === 'story' ? 'Descargar para Historia' : 'Descargar para Feed';
+            renderIgFlyer();
+        }
+
+        function handleIgExtraPhoto(event, index) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                igExtrasByProp[igFlyerState.propId].photos[index] = e.target.result;
+                updateIgExtraThumb(index);
+                renderIgFlyer();
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function removeIgExtraPhoto(index) {
+            const extras = igExtrasByProp[igFlyerState.propId];
+            extras.photos[index] = null;
+            extras.captions[index] = '';
+            document.getElementById(`igExtraCaption${index}`).value = '';
+            updateIgExtraThumb(index);
+            renderIgFlyer();
+        }
+
+        function updateIgExtraThumb(index) {
+            const src = igExtrasByProp[igFlyerState.propId].photos[index];
+            const thumb = document.getElementById(`igExtraThumb${index}`);
+            thumb.src = src || '';
+            thumb.classList.toggle('hidden', !src);
+            document.getElementById(`igExtraIcon${index}`).classList.toggle('hidden', !!src);
+        }
+
+        function scheduleIgFlyerRender() {
+            clearTimeout(igRenderTimer);
+            igRenderTimer = setTimeout(() => {
+                igRenderTimer = null;
+                renderIgFlyer();
+            }, 300);
+        }
+
+        function renderIgFlyer() {
+            clearTimeout(igRenderTimer);
+            igRenderTimer = null;
+            igFlyerState.renderPromise = renderIgFlyerAsync();
+            return igFlyerState.renderPromise;
+        }
+
+        async function renderIgFlyerAsync() {
+            const prop = properties.find(p => p.id === igFlyerState.propId);
+            if (!prop) return;
+            const token = ++igFlyerState.renderToken;
+            igFlyerState.blob = null;
+
+            const extras = igExtrasByProp[prop.id];
+            extras.captions = [0, 1].map(i => document.getElementById(`igExtraCaption${i}`).value.trim());
+
+            const loading = document.getElementById('igFlyerLoading');
+            loading.classList.remove('hidden');
+            try {
+                await loadIgFonts();
+                const mainImg = await loadIgImage(getIgHighResUrl(prop.image));
+                const extraImgs = [];
+                for (let i = 0; i < 2; i++) {
+                    const img = await loadIgImage(extras.photos[i]);
+                    if (img) extraImgs.push({ img, caption: extras.captions[i] });
+                }
+                if (token !== igFlyerState.renderToken) return;
+
+                const fmt = IG_FORMATS[igFlyerState.format];
+                const canvas = document.getElementById('igFlyerCanvas');
+                canvas.width = fmt.w;
+                canvas.height = fmt.h;
+                drawIgFlyer(canvas.getContext('2d'), igFlyerState.format, prop, mainImg, extraImgs);
+
+                if (!mainImg && !igFlyerState.warnedPhoto) {
+                    igFlyerState.warnedPhoto = true;
+                    showToast('No se pudo usar la foto principal desde ese link. Volvé a cargar la propiedad subiendo la foto desde el celular o PC.');
+                }
+
+                const blob = await getIgFlyerBlob();
+                if (token === igFlyerState.renderToken) igFlyerState.blob = blob;
+            } catch (e) {
+                console.warn('No se pudo generar el flyer:', e);
+            } finally {
+                if (token === igFlyerState.renderToken) loading.classList.add('hidden');
+            }
+        }
+
+        function loadIgFonts() {
+            if (!document.fonts || !document.fonts.load) return Promise.resolve();
+            return Promise.all([
+                '700 100px "Cormorant Garamond"',
+                '600 100px "Cormorant Garamond"',
+                '700 40px "Plus Jakarta Sans"',
+                '600 40px "Plus Jakarta Sans"',
+                '500 40px "Plus Jakarta Sans"'
+            ].map(f => document.fonts.load(f).catch(() => null)));
+        }
+
+        // Las fotos de Unsplash se piden en mayor resolución para que el flyer salga nítido
+        function getIgHighResUrl(src) {
+            if (src && src.includes('images.unsplash.com')) return src.replace(/([?&])w=\d+/, '$1w=1400');
+            return src;
+        }
+
+        function loadIgImage(src) {
+            if (!src) return Promise.resolve(null);
+            if (!igImageCache.has(src)) {
+                igImageCache.set(src, new Promise(resolve => {
+                    const img = new Image();
+                    // Sin CORS el navegador no deja exportar la imagen; en ese caso se usa un fondo de color
+                    if (!src.startsWith('data:')) img.crossOrigin = 'anonymous';
+                    img.onload = () => resolve(img);
+                    img.onerror = () => resolve(null);
+                    img.src = src;
+                }));
+            }
+            return igImageCache.get(src);
+        }
+
+        function canShareIgFiles() {
+            try {
+                return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'flyer.jpg', { type: 'image/jpeg' })] }));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function getIgFlyerFileName() {
+            const prop = properties.find(p => p.id === igFlyerState.propId);
+            return `GinaPepa_${prop ? prop.code : 'GP'}_${IG_FORMATS[igFlyerState.format].label}.jpg`;
+        }
+
+        function getIgFlyerBlob() {
+            return new Promise((resolve, reject) => {
+                const canvas = document.getElementById('igFlyerCanvas');
+                canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('No se pudo exportar la imagen')), 'image/jpeg', 0.93);
+            });
+        }
+
+        async function downloadIgFlyer() {
+            try {
+                if (igRenderTimer) renderIgFlyer();
+                await igFlyerState.renderPromise;
+                const blob = igFlyerState.blob || await getIgFlyerBlob();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = getIgFlyerFileName();
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 5000);
+                showToast('¡Flyer descargado! Ya lo podés subir a Instagram');
+            } catch (e) {
+                showToast('No se pudo generar la imagen. Probá subiendo la foto desde el celular o PC.');
+            }
+        }
+
+        function shareIgFlyer() {
+            // El celular solo permite compartir si se llama apenas se toca el botón, por eso se usa la imagen ya armada
+            if (igRenderTimer || !igFlyerState.blob) {
+                if (igRenderTimer) renderIgFlyer();
+                showToast('Esperá un segundito que se termina de armar el flyer y volvé a tocar');
+                return;
+            }
+            const file = new File([igFlyerState.blob], getIgFlyerFileName(), { type: 'image/jpeg' });
+            navigator.share({ files: [file] }).catch(e => {
+                if (e && e.name !== 'AbortError') showToast('No se pudo compartir. Usá "Descargar" y subila desde la galería.');
+            });
+        }
+
+        // ---------- Dibujo del flyer ----------
+        let igCurrentFont = { weight: 400, size: 16, family: 'sans' };
+
+        function igFont(ctx, weight, size, family) {
+            igCurrentFont = { weight, size, family };
+            ctx.font = `${weight} ${size}px ${family === 'sans' ? '"Plus Jakarta Sans", sans-serif' : '"Cormorant Garamond", Georgia, serif'}`;
+        }
+
+        function igSpacing(ctx, px) {
+            if ('letterSpacing' in ctx) ctx.letterSpacing = `${px}px`;
+        }
+
+        // Cormorant usa números "antiguos" (desparejos); en los textos serif los números se dibujan con la sans
+        function igRuns(text) {
+            if (igCurrentFont.family === 'sans') return [{ text, digits: false }];
+            return String(text).split(/(\d+)/).filter(Boolean).map(t => ({ text: t, digits: /^\d/.test(t) }));
+        }
+
+        function igWithRunFont(ctx, run, fn) {
+            if (!run.digits) return fn();
+            const saved = ctx.font;
+            ctx.font = `700 ${igCurrentFont.size * 0.84}px "Plus Jakarta Sans", sans-serif`;
+            const result = fn();
+            ctx.font = saved;
+            return result;
+        }
+
+        function igMeasure(ctx, text) {
+            return igRuns(text).reduce((sum, run) => sum + igWithRunFont(ctx, run, () => ctx.measureText(run.text).width), 0);
+        }
+
+        function igFillText(ctx, text, x, y) {
+            const align = ctx.textAlign;
+            const total = igMeasure(ctx, text);
+            let cursor = align === 'center' ? x - total / 2 : (align === 'right' ? x - total : x);
+            ctx.textAlign = 'left';
+            igRuns(text).forEach(run => igWithRunFont(ctx, run, () => {
+                ctx.fillText(run.text, cursor, y);
+                cursor += ctx.measureText(run.text).width;
+            }));
+            ctx.textAlign = align;
+        }
+
+        function igWrap(ctx, text, maxWidth) {
+            // Un número inicial ("3 habitaciones") no queda solo en un renglón
+            const words = String(text || '').replace(/^(\d+) /, '$1 ').split(/ +/).filter(Boolean)
+                .flatMap(word => word.includes(' ') && igMeasure(ctx, word) > maxWidth ? word.split(' ') : [word]);
+            const lines = [];
+            let line = '';
+            words.forEach(word => {
+                const test = line ? `${line} ${word}` : word;
+                if (line && igMeasure(ctx, test) > maxWidth) {
+                    lines.push(line);
+                    line = word;
+                } else {
+                    line = test;
+                }
+            });
+            if (line) lines.push(line);
+            return lines;
+        }
+
+        // Achica la letra hasta que el texto entre en el ancho y cantidad de renglones pedidos
+        function igFitText(ctx, text, maxWidth, maxLines, startSize, minSize, weight, family) {
+            let lines = [];
+            for (let size = startSize; size >= minSize; size -= 2) {
+                igFont(ctx, weight, size, family);
+                lines = igWrap(ctx, text, maxWidth);
+                if (lines.length <= maxLines && lines.every(l => igMeasure(ctx, l) <= maxWidth)) {
+                    return { lines, size };
+                }
+            }
+            igFont(ctx, weight, minSize, family);
+            lines = igWrap(ctx, text, maxWidth);
+            if (lines.length > maxLines) {
+                lines = lines.slice(0, maxLines);
+                let last = lines[maxLines - 1];
+                while (last.length > 1 && igMeasure(ctx, `${last}…`) > maxWidth) last = last.slice(0, -1);
+                lines[maxLines - 1] = `${last.trim()}…`;
+            }
+            return { lines, size: minSize };
+        }
+
+        function igRoundRect(ctx, x, y, w, h, r) {
+            const [tl, tr, br, bl] = Array.isArray(r) ? r : [r, r, r, r];
+            ctx.beginPath();
+            ctx.moveTo(x + tl, y);
+            ctx.lineTo(x + w - tr, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + tr);
+            ctx.lineTo(x + w, y + h - br);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+            ctx.lineTo(x + bl, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - bl);
+            ctx.lineTo(x, y + tl);
+            ctx.quadraticCurveTo(x, y, x + tl, y);
+            ctx.closePath();
+        }
+
+        function igDrawCover(ctx, img, x, y, w, h) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            if (img) {
+                const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+                const dw = img.naturalWidth * scale;
+                const dh = img.naturalHeight * scale;
+                ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+            } else {
+                const g = ctx.createLinearGradient(x, y, x + w, y + h);
+                g.addColorStop(0, IG_COLORS.plum);
+                g.addColorStop(1, IG_COLORS.dark);
+                ctx.fillStyle = g;
+                ctx.fillRect(x, y, w, h);
+            }
+            ctx.restore();
+        }
+
+        function igDrawIcon(ctx, name, cx, cy, size, color, lineWidth) {
+            const path = new Path2D(IG_ICON_PATHS[name] || IG_ICON_PATHS.check);
+            ctx.save();
+            ctx.translate(cx - size / 2, cy - size / 2);
+            ctx.scale(size / 24, size / 24);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.stroke(path);
+            ctx.restore();
+        }
+
+        function igIconFor(text) {
+            const t = String(text || '').toLowerCase();
+            if (/dorm|habitac/.test(t)) return 'bed';
+            if (/garage|garaje|cochera/.test(t)) return 'car';
+            if (/pileta|piscina/.test(t)) return 'pool';
+            if (/local|comercial|vidriera|negocio/.test(t)) return 'store';
+            if (/baño|bano/.test(t)) return 'bath';
+            if (/parrilla|estufa|leña|hogar/.test(t)) return 'flame';
+            if (/lavadero/.test(t)) return 'washer';
+            if (/cocina|kitchenette/.test(t)) return 'pot';
+            if (/living|estar|comedor/.test(t)) return 'sofa';
+            if (/jard|patio|parque|arbol|terreno|quinta/.test(t)) return 'tree';
+            if (/ubicaci|avenida|centr|zona|calle|visibilidad/.test(t)) return 'pin';
+            if (/casa|vivienda|depto|departamento|ampliaci/.test(t)) return 'house';
+            return 'check';
+        }
+
+        // Ramita de hojas decorativa (como la de los flyers y el logo)
+        function igDrawSprig(ctx, x, y, length, angle, color, alpha) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.lineWidth = Math.max(2, length / 70);
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(length * 0.15, -length * 0.5, 0, -length);
+            ctx.stroke();
+            const leaves = 7;
+            for (let i = 1; i <= leaves; i++) {
+                const t = i / (leaves + 1);
+                const px = 2 * (1 - t) * t * length * 0.15;
+                const py = -(2 * (1 - t) * t * length * 0.5 + t * t * length);
+                const leafLen = length * 0.22 * (1 - t * 0.45);
+                ctx.save();
+                ctx.translate(px, py);
+                ctx.rotate((i % 2 ? 1 : -1) * 0.9);
+                ctx.beginPath();
+                ctx.ellipse(0, -leafLen / 2, leafLen * 0.28, leafLen / 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            ctx.beginPath();
+            ctx.ellipse(0, -length * 1.08, length * 0.05, length * 0.1, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function igDrawLogo(ctx, x, y, s) {
+            const w = 260 * s, h = 220 * s, cx = x + w / 2;
+            ctx.save();
+            ctx.shadowColor = 'rgba(61, 20, 48, 0.28)';
+            ctx.shadowBlur = 26 * s;
+            ctx.shadowOffsetY = 6 * s;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            igRoundRect(ctx, x, y, w, h, 24 * s);
+            ctx.fill();
+            ctx.restore();
+
+            ctx.save();
+            ctx.strokeStyle = IG_COLORS.plum;
+            ctx.lineWidth = 4 * s;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(cx - 78 * s, y + 120 * s);
+            ctx.lineTo(cx - 78 * s, y + 66 * s);
+            ctx.lineTo(cx, y + 24 * s);
+            ctx.lineTo(cx + 78 * s, y + 66 * s);
+            ctx.lineTo(cx + 78 * s, y + 120 * s);
+            ctx.stroke();
+            ctx.restore();
+            igDrawSprig(ctx, cx - 92 * s, y + 124 * s, 88 * s, -0.3, IG_COLORS.plum, 0.85);
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.fillStyle = IG_COLORS.dark;
+            igSpacing(ctx, 2);
+            igFont(ctx, 700, 76 * s, 'serif');
+            ctx.fillText('GP', cx, y + 116 * s);
+            igSpacing(ctx, 0.5);
+            igFont(ctx, 600, 40 * s, 'serif');
+            ctx.fillText('Gina Pepa', cx, y + 164 * s);
+            igSpacing(ctx, 5 * s);
+            igFont(ctx, 600, 15 * s, 'sans');
+            ctx.fillStyle = IG_COLORS.plum;
+            ctx.fillText('INMOBILIARIA', cx, y + 195 * s);
+            ctx.restore();
+        }
+
+        function igDrawCaption(ctx, text, x, y, w, h, isStory) {
+            ctx.save();
+            igSpacing(ctx, 2);
+            const fit = igFitText(ctx, text.toUpperCase(), w - 90, 2, isStory ? 40 : 34, 22, 700, 'serif');
+            const lineH = fit.size * 1.1;
+            const textW = Math.max(...fit.lines.map(l => igMeasure(ctx, l)));
+            const boxW = Math.min(w - 40, textW + 60);
+            const boxH = fit.size * 0.7 + (fit.lines.length - 1) * lineH + 40;
+            const bx = x + (w - boxW) / 2;
+            const by = y + h - boxH - 20;
+            ctx.fillStyle = 'rgba(100, 35, 78, 0.93)';
+            igRoundRect(ctx, bx, by, boxW, boxH, 14);
+            ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            fit.lines.forEach((l, i) => igFillText(ctx, l, x + w / 2, by + 20 + fit.size * 0.7 + i * lineH));
+            ctx.restore();
+        }
+
+        function drawIgFlyer(ctx, format, prop, mainImg, extraImgs) {
+            const { w: W, h: H } = IG_FORMATS[format];
+            const isStory = format === 'story';
+            const isVenta = prop.operation === 'Venta';
+            const gap = 14;
+
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, W, H);
+            ctx.textBaseline = 'alphabetic';
+
+            // Alto de cada bloque: foto principal + fotos extra + comodidades + pie con contacto
+            const maxFeatures = isStory ? (extraImgs.length ? 3 : 6) : 4;
+            const features = (prop.amenities || []).filter(Boolean).slice(0, maxFeatures);
+            const featCols = Math.min(features.length, isStory ? 3 : 4);
+            const featRows = featCols ? Math.ceil(features.length / featCols) : 0;
+            const featRowH = isStory ? 260 : 215;
+            const featuresH = featRows ? featRows * featRowH + 30 : 0;
+            const rowH = extraImgs.length ? (isStory ? 420 : 320) : 0;
+            const footerH = isStory ? 340 : 175;
+            const heroH = H - footerH - featuresH - (rowH ? rowH + gap : 0);
+
+            // --- Foto principal ---
+            igDrawCover(ctx, mainImg, 0, 0, W, heroH);
+            const shade = ctx.createLinearGradient(0, heroH * 0.45, 0, heroH);
+            shade.addColorStop(0, 'rgba(61, 20, 48, 0)');
+            shade.addColorStop(1, 'rgba(61, 20, 48, 0.45)');
+            ctx.fillStyle = shade;
+            ctx.fillRect(0, heroH * 0.45, W, heroH * 0.55);
+
+            igDrawLogo(ctx, isStory ? 50 : 40, isStory ? 170 : 36, isStory ? 1.05 : 0.88);
+
+            // --- Banda "SE VENDE / SE ALQUILA" ---
+            const bandW = Math.round(W * 0.72);
+            const bandPadX = isStory ? 135 : 122;
+            const bandPadY = isStory ? 30 : 24;
+            const textMaxW = bandW - bandPadX - 40;
+            igSpacing(ctx, 3);
+            const op = igFitText(ctx, isVenta ? 'SE VENDE' : 'SE ALQUILA', textMaxW, 1, isStory ? 140 : 116, 60, 700, 'serif');
+            igSpacing(ctx, 1.5);
+            const sub = igFitText(ctx, (prop.title || '').toUpperCase(), textMaxW, 2, isStory ? 50 : 42, 26, 600, 'serif');
+            const opH = op.size * 0.68;
+            const subLineH = sub.size * 1.12;
+            const bandGap = isStory ? 22 : 18;
+            const bandH = bandPadY * 2 + opH + bandGap + sub.size * 0.7 + (sub.lines.length - 1) * subLineH;
+            const bandY = heroH - bandH - (isStory ? 40 : 30);
+
+            ctx.save();
+            ctx.shadowColor = 'rgba(61, 20, 48, 0.25)';
+            ctx.shadowBlur = 30;
+            ctx.shadowOffsetY = 8;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+            igRoundRect(ctx, 0, bandY, bandW, bandH, [0, 40, 40, 0]);
+            ctx.fill();
+            ctx.restore();
+            igDrawSprig(ctx, bandPadX / 2 - 6, bandY + bandH - 14, bandH * 0.8, 0.1, IG_COLORS.plum, 0.9);
+
+            ctx.save();
+            ctx.textAlign = 'left';
+            const opBaseline = bandY + bandPadY + opH;
+            igSpacing(ctx, 3);
+            igFont(ctx, 700, op.size, 'serif');
+            ctx.fillStyle = IG_COLORS.plum;
+            igFillText(ctx, op.lines[0], bandPadX, opBaseline);
+            igSpacing(ctx, 1.5);
+            igFont(ctx, 600, sub.size, 'serif');
+            ctx.fillStyle = IG_COLORS.dark;
+            sub.lines.forEach((l, i) => igFillText(ctx, l, bandPadX, opBaseline + bandGap + sub.size * 0.7 + i * subLineH));
+            ctx.restore();
+
+            // --- Tarjeta destacada (ej: "EXCELENTE UBICACIÓN") ---
+            if (prop.badge) {
+                ctx.save();
+                const pillX = bandW + 18;
+                const pillW = W - pillX - (isStory ? 36 : 30);
+                igSpacing(ctx, 1);
+                const bt = igFitText(ctx, prop.badge.toUpperCase(), pillW - 36, 3, isStory ? 38 : 32, 20, 700, 'serif');
+                const iconD = isStory ? 64 : 56;
+                const lineH = bt.size * 1.05;
+                const pillH = 22 + iconD + 14 + bt.size * 0.7 + (bt.lines.length - 1) * lineH + 24;
+                const pillY = pillH > bandH ? bandY + bandH - pillH : bandY + (bandH - pillH) / 2;
+                const pcx = pillX + pillW / 2;
+
+                ctx.shadowColor = 'rgba(61, 20, 48, 0.25)';
+                ctx.shadowBlur = 24;
+                ctx.shadowOffsetY = 6;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+                igRoundRect(ctx, pillX, pillY, pillW, pillH, 26);
+                ctx.fill();
+                ctx.shadowColor = 'transparent';
+
+                ctx.fillStyle = IG_COLORS.plum;
+                ctx.beginPath();
+                ctx.arc(pcx, pillY + 22 + iconD / 2, iconD / 2, 0, Math.PI * 2);
+                ctx.fill();
+                const badgeIcon = igIconFor(prop.badge);
+                igDrawIcon(ctx, badgeIcon === 'check' ? 'sparkle' : badgeIcon, pcx, pillY + 22 + iconD / 2, iconD * 0.58, '#FFFFFF', 1.8);
+
+                igFont(ctx, 700, bt.size, 'serif');
+                ctx.fillStyle = IG_COLORS.deep;
+                ctx.textAlign = 'center';
+                bt.lines.forEach((l, i) => igFillText(ctx, l, pcx, pillY + 22 + iconD + 14 + bt.size * 0.7 + i * lineH));
+                ctx.restore();
+            }
+
+            // --- Fotos extra con su texto ---
+            let y = heroH;
+            if (rowH) {
+                y += gap;
+                const cellW = (W - gap * (extraImgs.length - 1)) / extraImgs.length;
+                extraImgs.forEach((extra, i) => {
+                    const x = i * (cellW + gap);
+                    igDrawCover(ctx, extra.img, x, y, cellW, rowH);
+                    if (extra.caption) igDrawCaption(ctx, extra.caption, x, y, cellW, rowH, isStory);
+                });
+                y += rowH;
+            }
+
+            // --- Comodidades con íconos ---
+            if (featuresH) {
+                ctx.fillStyle = IG_COLORS.soft;
+                ctx.fillRect(0, y, W, featuresH);
+                igDrawSprig(ctx, 14, y + featuresH - 6, 110, 0.5, IG_COLORS.plum, 0.13);
+                igDrawSprig(ctx, W - 14, y + featuresH - 6, 110, -0.5, IG_COLORS.plum, 0.13);
+
+                const padX = 36;
+                const colW = (W - padX * 2) / featCols;
+                const iconSize = isStory ? 84 : 66;
+                // Todas las comodidades con el mismo tamaño de letra (el que entre en la más larga)
+                igSpacing(ctx, 1);
+                const labelSize = Math.max(isStory ? 32 : 26, Math.min(...features.map(feat =>
+                    igFitText(ctx, feat.toUpperCase(), colW - 28, 3, isStory ? 40 : 30, 20, 700, 'serif').size)));
+                features.forEach((feat, i) => {
+                    const r = Math.floor(i / featCols);
+                    const c = i % featCols;
+                    const inRow = Math.min(featCols, features.length - r * featCols);
+                    const cellX = padX + (featCols - inRow) * colW / 2 + c * colW;
+                    const cellY = y + 15 + r * featRowH;
+                    const cx = cellX + colW / 2;
+
+                    if (c > 0) {
+                        ctx.strokeStyle = IG_COLORS.line;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(cellX, cellY + 30);
+                        ctx.lineTo(cellX, cellY + featRowH - 30);
+                        ctx.stroke();
+                    }
+
+                    igDrawIcon(ctx, igIconFor(feat), cx, cellY + 24 + iconSize / 2, iconSize, IG_COLORS.plum, 1.5);
+
+                    ctx.save();
+                    igSpacing(ctx, 1);
+                    const fit = igFitText(ctx, feat.toUpperCase(), colW - 28, 3, labelSize, 20, 700, 'serif');
+                    const lineH = fit.size * 1.08;
+                    ctx.fillStyle = IG_COLORS.dark;
+                    ctx.textAlign = 'center';
+                    fit.lines.forEach((l, li) => igFillText(ctx, l, cx, cellY + 24 + iconSize + 20 + fit.size * 0.7 + li * lineH));
+                    ctx.restore();
+                });
+            }
+
+            // --- Pie: valor, ubicación y WhatsApp ---
+            const fy = H - footerH;
+            const fg = ctx.createLinearGradient(0, fy, W, H);
+            fg.addColorStop(0, IG_COLORS.deep);
+            fg.addColorStop(1, IG_COLORS.dark);
+            ctx.fillStyle = fg;
+            ctx.fillRect(0, fy, W, footerH);
+
+            const k = isStory ? 1.2 : 1;
+            const top = fy + (isStory ? 50 : 0);
+            const half = W / 2;
+            const leftX = 44;
+            const rightX = W - 44;
+
+            ctx.strokeStyle = 'rgba(220, 182, 205, 0.35)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(half, top + 28 * k);
+            ctx.lineTo(half, top + 150 * k);
+            ctx.stroke();
+
+            ctx.save();
+            ctx.textAlign = 'left';
+            igSpacing(ctx, 4);
+            igFont(ctx, 700, 18 * k, 'sans');
+            ctx.fillStyle = IG_COLORS.line;
+            ctx.fillText(isVenta ? 'VALOR DE VENTA' : 'VALOR DE ALQUILER', leftX, top + 46 * k);
+            igSpacing(ctx, 0.5);
+            const priceFit = igFitText(ctx, prop.price || 'Consultar valor', half - 90, 1, 56 * k, 28, 700, 'serif');
+            ctx.fillStyle = '#FFFFFF';
+            igFillText(ctx, priceFit.lines[0] || '', leftX, top + 100 * k);
+            igDrawIcon(ctx, 'pin', leftX + 13 * k, top + 136 * k, 26 * k, IG_COLORS.line, 2);
+            igSpacing(ctx, 0);
+            const locFit = igFitText(ctx, prop.location || '', half - 130, 1, 24 * k, 16, 500, 'sans');
+            ctx.fillStyle = '#F7EEF3';
+            ctx.fillText(locFit.lines[0] || '', leftX + 34 * k, top + 144 * k);
+
+            ctx.textAlign = 'right';
+            igSpacing(ctx, 4);
+            igFont(ctx, 700, 18 * k, 'sans');
+            ctx.fillStyle = IG_COLORS.line;
+            ctx.fillText('CONSULTAS POR WHATSAPP', rightX, top + 46 * k);
+            igSpacing(ctx, 1);
+            const phoneFit = igFitText(ctx, ginaPhoneConfig.display, half - 130, 1, 54 * k, 28, 700, 'serif');
+            ctx.fillStyle = '#FFFFFF';
+            igFillText(ctx, phoneFit.lines[0], rightX, top + 100 * k);
+            const phoneW = igMeasure(ctx, phoneFit.lines[0]);
+            igDrawIcon(ctx, 'phone', rightX - phoneW - 30 * k, top + 84 * k, 34 * k, '#FFFFFF', 1.8);
+            igSpacing(ctx, 3);
+            igFont(ctx, 600, 17 * k, 'sans');
+            ctx.fillStyle = IG_COLORS.line;
+            ctx.fillText(`GINA PEPA INMOBILIARIA · ${prop.code}`, rightX, top + 142 * k);
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // CONFIGURACIÓN DE TELÉFONO Y UTILIDADES
+        // ============================================================================
+        function openPhoneConfigModal() {
+            document.getElementById('configDisplayPhone').value = ginaPhoneConfig.display;
+            document.getElementById('configWaPhone').value = ginaPhoneConfig.whatsapp;
+            document.getElementById('phoneConfigModal').classList.remove('hidden');
+        }
+
+        function closePhoneConfigModal() {
+            document.getElementById('phoneConfigModal').classList.add('hidden');
+        }
+
+        function savePhoneConfig() {
+            const disp = document.getElementById('configDisplayPhone').value.trim() || '02302 45-7818';
+            const wa = document.getElementById('configWaPhone').value.replace(/[^0-9]/g, '') || '5492302457818';
+            ginaPhoneConfig = { display: disp, whatsapp: wa };
+            try {
+                localStorage.setItem('gina_pepa_phone_v1', JSON.stringify(ginaPhoneConfig));
+            } catch (e) {}
+            updatePhoneDisplays();
+            closePhoneConfigModal();
+            showToast('Número de contacto actualizado en toda la web');
+        }
+
+        function updatePhoneDisplays() {
+            document.getElementById('topBarPhoneDisplay').textContent = `Tel. Nuevos Clientes: ${ginaPhoneConfig.display}`;
+            document.getElementById('bannerPhoneText').textContent = `WhatsApp: ${ginaPhoneConfig.display}`;
+            document.getElementById('contactCardPhoneNumber').textContent = ginaPhoneConfig.display;
+            document.getElementById('footerPhoneDisplay').textContent = ginaPhoneConfig.display;
+            document.getElementById('headerMobileWaBtn').href = `https://wa.me/${ginaPhoneConfig.whatsapp}?text=Hola%20Gina!%20Me%20contacto%20desde%20tu%20p%C3%A1gina%20web.`;
+        }
+
+        function copyPhoneNumber() {
+            const tempInput = document.createElement('input');
+            tempInput.value = ginaPhoneConfig.display;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const copyTextEl = document.getElementById('copyPhoneBtnText');
+            copyTextEl.textContent = '¡Número copiado al portapapeles!';
+            showToast(`Número ${ginaPhoneConfig.display} copiado`);
+            setTimeout(() => {
+                copyTextEl.textContent = 'Copiar número de teléfono';
+            }, 2500);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Close modals on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePropertyModal();
+                closePhoneConfigModal();
+                closeIgFlyerModal();
+            }
+        });
+
+        window.onload = loadInitialData;
+    </script>
+</body>
+</html>
